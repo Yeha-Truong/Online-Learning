@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/fragments/download_fragment.dart';
 import 'package:flutter_app/views/fragments/home_fragment.dart';
-import 'package:flutter_app/views/fragments/search_alternative_fragment.dart';
 import 'package:flutter_app/views/fragments/search_fragment.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,9 +12,9 @@ class _HomePageState extends State<HomePage> {
   int _index = 0;
   static List<Widget> _fragments = <Widget>[
     HomeFragment(),
+    DownloadFragment(),
+    Container(),
     SearchFragment(),
-    Container(),
-    Container(),
   ];
 
   @override

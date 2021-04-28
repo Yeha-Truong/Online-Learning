@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/views/pages/course.dart';
 import 'views/pages/welcome.dart';
 import 'views/pages/signin.dart';
 import 'views/pages/support.dart';
@@ -16,8 +17,8 @@ class MyApp extends StatelessWidget {
       title: 'Online Learning',
       theme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
+        //primaryColor: Colors.lightBlue[800],
+        //accentColor: Colors.cyan[600],
 
         appBarTheme: AppBarTheme(
           brightness: Brightness.dark,
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => WelcomePage(),
+        '/': (context) => CoursePage(),
         '/signin': (context) => SigninPage(),
         '/support': (context) => SupportPage(),
         '/home': (context) => HomePage(),

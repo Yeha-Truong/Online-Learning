@@ -13,15 +13,15 @@ class CourseCard extends StatelessWidget {
   final int votes;
 
   const CourseCard(
-      {Key key,
-      @required this.image,
-      @required this.title,
-      @required this.author,
-      @required this.level,
-      @required this.date,
-      @required this.time,
-      @required this.rating,
-      @required this.votes})
+      {Key? key,
+      required this.image,
+      required this.title,
+      required this.author,
+      required this.level,
+      required this.date,
+      required this.time,
+      required this.rating,
+      required this.votes})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spaces.dart';
-import 'package:flutter_app/views/components/rating_bar.dart';
 
 class AuthorCard extends StatelessWidget {
   final ImageProvider<Object> image;
   final String author;
 
   const AuthorCard({
-    Key key,
-    @required this.image,
-    @required this.author,
+    Key? key,
+    required this.image,
+    required this.author,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
+//ignore: must_be_immutable
 class RatingBar extends StatefulWidget {
   final int stars;
   double rate;
   final bool reactable;
-  final Color color;
+  final Color? color;
   final double size;
 
   RatingBar(
-      {Key key,
+      {Key? key,
       this.stars = 5,
       this.rate = 0.0,
       this.reactable = true,

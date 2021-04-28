@@ -13,14 +13,14 @@ class CourseListTile extends StatelessWidget {
   final double rating;
 
   const CourseListTile(
-      {Key key,
-      @required this.image,
-      @required this.title,
-      @required this.author,
-      @required this.level,
-      @required this.date,
-      @required this.time,
-      @required this.rating})
+      {Key? key,
+      required this.image,
+      required this.title,
+      required this.author,
+      required this.level,
+      required this.date,
+      required this.time,
+      required this.rating})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -38,8 +38,7 @@ class CourseListTile extends StatelessWidget {
         icon: Icon(Icons.more_horiz),
         onPressed: () => {},
       ),
-      title: Expanded(
-          child: Column(
+      title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -83,7 +82,7 @@ class CourseListTile extends StatelessWidget {
             ],
           ),
         ],
-      )),
+      ),
     );
   }
 }

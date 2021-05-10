@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spaces.dart';
+import 'package:flutter_app/views/components/spacer.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
-import 'package:flutter_app/views/components/text_style.dart';
 
 class CourseListTile extends StatelessWidget {
   final ImageProvider<Object> image;
@@ -44,29 +43,27 @@ class CourseListTile extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.bodyText2,
           ),
           Text(
             author,
-            style: CustomTextStyle().TextStyle_S(),
+            style: Theme.of(context).textTheme.caption,
           ),
           Row(
             children: [
               Text(
                 level,
-                style: CustomTextStyle().TextStyle_S(),
+                style: Theme.of(context).textTheme.caption,
               ),
-              TextSeparator_S(),
+              TextSeparator(distance: 4.0),
               Text(
                 date,
-                style: CustomTextStyle().TextStyle_S(),
+                style: Theme.of(context).textTheme.caption,
               ),
-              TextSeparator_S(),
+              TextSeparator(distance: 4.0),
               Text(
                 time,
-                style: CustomTextStyle().TextStyle_S(),
+                style: Theme.of(context).textTheme.caption,
               ),
             ],
           ),

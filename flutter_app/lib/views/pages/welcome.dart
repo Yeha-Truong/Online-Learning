@@ -5,8 +5,13 @@ class WelcomePage extends StatelessWidget {
     Navigator.pushNamed(context, '/signin');
   }
 
-  void _subscribe() {}
-  void _trail() {}
+  void _subscribe(context) {
+    Navigator.pushNamed(context, '/signup');
+  }
+
+  void _trail(context) {
+    Navigator.pushNamed(context, '/home');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +70,14 @@ class WelcomePage extends StatelessWidget {
                           ),
                         ),
                         child: Text('Subscribe to Pluralsight'),
-                        onPressed: _subscribe,
+                        onPressed: () => _subscribe(context),
                       ),
                     ),
                     FractionallySizedBox(
                       widthFactor: 0.9,
                       child: OutlinedButton(
                         child: Text('Explore without a subsciption'),
-                        onPressed: _trail,
+                        onPressed: () => _trail(context),
                       ),
                     ),
                   ],

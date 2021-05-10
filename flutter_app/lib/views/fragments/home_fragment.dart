@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/author_card.dart';
 import 'package:flutter_app/views/components/course_card.dart';
+import 'package:flutter_app/views/components/spacer.dart';
 import 'package:flutter_app/views/fragments/course_list_fragment.dart';
 
 class HomeFragment extends StatefulWidget {
@@ -25,6 +26,7 @@ class _HomeFragmentState extends State<HomeFragment> {
           Container(
             child: Column(
               children: [
+                VerticalSpacer(distance: 12.0),
                 FractionallySizedBox(
                   widthFactor: 0.9,
                   child: Row(
@@ -32,15 +34,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                     children: [
                       Text(
                         'New',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       ElevatedButton(
                         onPressed: () => _viewAll(context),
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey[800]),
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromRGBO(44, 49, 55, 1)),
                           padding: MaterialStateProperty.all(
                             EdgeInsets.only(
                               left: 12.0,
@@ -114,15 +114,13 @@ class _HomeFragmentState extends State<HomeFragment> {
                     children: [
                       Text(
                         'Trending',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
                       ElevatedButton(
-                        onPressed: () => {},
+                        onPressed: () => _viewAll(context),
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey[800]),
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromRGBO(44, 49, 55, 1)),
                           padding: MaterialStateProperty.all(
                             EdgeInsets.only(
                               left: 12.0,
@@ -193,9 +191,7 @@ class _HomeFragmentState extends State<HomeFragment> {
                   widthFactor: 0.9,
                   child: Text(
                     'Top Authors',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
                 Container(

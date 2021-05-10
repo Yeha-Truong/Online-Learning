@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/text_style.dart';
 import 'package:flutter_app/views/fragments/search_alternative_fragment.dart';
 
 class SearchFragment extends StatelessWidget {
@@ -46,11 +45,11 @@ class SearchFragment extends StatelessWidget {
           children: [
             Text(
               'Over 7,000 courses at your fingertips',
-              style: CustomTextStyle().TextStyle_L(),
+              style: Theme.of(context).textTheme.subtitle2,
             ),
             Text(
               'Search by title, aauthor or subject.',
-              style: CustomTextStyle().TextStyle_M_B(),
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ],
         ),

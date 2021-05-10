@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spaces.dart';
-import 'package:flutter_app/views/components/text_style.dart';
+import 'package:flutter_app/views/components/spacer.dart';
 
 class AuthorTag extends StatelessWidget {
   final ImageProvider<Object> image;
@@ -17,7 +16,7 @@ class AuthorTag extends StatelessWidget {
       child: InkWell(
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.grey[600],
+              color: Color.fromRGBO(44, 49, 55, 1),
               borderRadius: BorderRadius.all(Radius.circular(18.0))),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -34,13 +33,13 @@ class AuthorTag extends StatelessWidget {
                   ),
                 ),
               ),
-              TextSpace_S(),
+              HorizontalSpacer(distance: 4.0),
               Container(
                 margin: EdgeInsets.only(right: 8.0),
                 child: Text(
                   author,
                   overflow: TextOverflow.ellipsis,
-                  style: CustomTextStyle().TextStyle_S(),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
             ],

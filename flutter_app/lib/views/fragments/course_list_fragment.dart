@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/course_list_tile.dart';
 
-class CourseListFragment extends StatelessWidget {
+class CourseListFragment extends StatefulWidget {
+  @override
+  _CourseListFragmentState createState() => _CourseListFragmentState();
+}
+
+class _CourseListFragmentState extends State<CourseListFragment> {
+  void _cancel(context) {
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +32,7 @@ class CourseListFragment extends StatelessWidget {
                   Text('React'),
                 ],
               ),
-              onTap: () => {},
+              onTap: () => _cancel(context),
             ),
           ),
         ),

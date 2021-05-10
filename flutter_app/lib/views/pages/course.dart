@@ -4,9 +4,8 @@ import 'package:flutter_app/views/components/expandable_text.dart';
 import 'package:flutter_app/views/components/lesson_list_tile.dart';
 import 'package:flutter_app/views/components/sticky_widget.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
-import 'package:flutter_app/views/components/spaces.dart';
+import 'package:flutter_app/views/components/spacer.dart';
 import 'package:flutter_app/views/components/video_player.dart';
-import 'package:flutter_app/views/components/text_style.dart';
 
 class CoursePage extends StatefulWidget {
   @override
@@ -48,45 +47,43 @@ class _CoursePageState extends State<CoursePage>
                     children: [
                       Text(
                         'React: The Big Picture',
-                        style: CustomTextStyle().TextStyle_L_B(),
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
-                      VerticalSpace_M(),
+                      VerticalSpacer(distance: 16.0),
                       AuthorTag(
                         image: AssetImage('assets/default/takodachi.png'),
                         author: 'Cory House',
                       ),
-                      VerticalSpace_M(),
+                      VerticalSpacer(distance: 16.0),
                       Row(
                         children: [
-                          Text(
-                            'Beginner',
-                            style: CustomTextStyle().TextStyle_S(),
-                          ),
-                          TextSeparator_S(),
+                          Text('Beginner',
+                              style: Theme.of(context).textTheme.caption),
+                          TextSeparator(distance: 4.0),
                           Text(
                             'November 21, 2017',
-                            style: CustomTextStyle().TextStyle_S(),
+                            style: Theme.of(context).textTheme.caption,
                           ),
-                          TextSeparator_S(),
+                          TextSeparator(distance: 4.0),
                           Text(
                             '1h 11m',
-                            style: CustomTextStyle().TextStyle_S(),
+                            style: Theme.of(context).textTheme.caption,
                           ),
-                          TextSpace_S(),
+                          HorizontalSpacer(distance: 4.0),
                           RatingBar(
                             color: Colors.yellow[600],
                             rate: 5.0,
                             reactable: false,
                             size: 12.0,
                           ),
-                          TextSpace_S(),
+                          HorizontalSpacer(distance: 4.0),
                           Text(
                             '(459)',
-                            style: CustomTextStyle().TextStyle_S(),
+                            style: Theme.of(context).textTheme.caption,
                           ),
                         ],
                       ),
-                      VerticalSpace_M(),
+                      VerticalSpacer(distance: 16.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -96,17 +93,17 @@ class _CoursePageState extends State<CoursePage>
                               Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Colors.grey[600],
+                                  color: Color.fromRGBO(44, 49, 55, 1),
                                 ),
                                 child: IconButton(
                                   icon: Icon(Icons.bookmark),
                                   onPressed: () => {},
                                 ),
                               ),
-                              VerticalSpace_S(),
+                              VerticalSpacer(distance: 8.0),
                               Text(
                                 'Bookmarked',
-                                style: CustomTextStyle().TextStyle_S(),
+                                style: Theme.of(context).textTheme.caption,
                               ),
                             ],
                           ),
@@ -116,17 +113,17 @@ class _CoursePageState extends State<CoursePage>
                               Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Colors.grey[600],
+                                  color: Color.fromRGBO(44, 49, 55, 1),
                                 ),
                                 child: IconButton(
                                   icon: Icon(Icons.add_to_queue),
                                   onPressed: () => {},
                                 ),
                               ),
-                              VerticalSpace_S(),
+                              VerticalSpacer(distance: 8.0),
                               Text(
                                 'Add to channel',
-                                style: CustomTextStyle().TextStyle_S(),
+                                style: Theme.of(context).textTheme.caption,
                               ),
                             ],
                           ),
@@ -136,17 +133,17 @@ class _CoursePageState extends State<CoursePage>
                               Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Colors.grey[600],
+                                  color: Color.fromRGBO(44, 49, 55, 1),
                                 ),
                                 child: IconButton(
                                   icon: Icon(Icons.arrow_circle_down_rounded),
                                   onPressed: () => {},
                                 ),
                               ),
-                              VerticalSpace_S(),
+                              VerticalSpacer(distance: 8.0),
                               Text(
                                 'Downloaded',
-                                style: CustomTextStyle().TextStyle_S(),
+                                style: Theme.of(context).textTheme.caption,
                               ),
                             ],
                           ),
@@ -155,20 +152,20 @@ class _CoursePageState extends State<CoursePage>
                       Divider(
                         thickness: 1.0,
                       ),
-                      VerticalSpace_S(),
+                      VerticalSpacer(distance: 8.0),
                       ExpandableText(
                         content:
-                            "You've heard of React, but is it right for you? In this course, React: The Big Picture, you will first learn why React has become so popular. Next, you will",
-                        style: CustomTextStyle().TextStyle_M(),
+                            "Learn React\nPeople come to React from different backgrounds and with different learning styles. Whether you prefer a more theoretical or a practical approach, we hope you’ll find this section helpful.\nIf you prefer to learn by doing, start with our practical tutorial.\nIf you prefer to learn concepts step by step, start with our guide to main concepts.\nLike any unfamiliar technology, React does have a learning curve. With practice and some patience, you will get the hang of it.\nFirst Examples\nThe React homepage contains a few small React examples with a live editor. Even if you don’t know anything about React yet, try changing their code and see how it affects the result.\nReact for Beginners\nIf you feel that the React documentation goes at a faster pace than you’re comfortable with, check out this overview of React by Tania Rascia. It introduces the most important React concepts in a detailed, beginner-friendly way. Once you’re done, give the documentation another try!\nReact for Designers\nIf you’re coming from a design background, these resources are a great place to get started.\nJavaScript Resources\nThe React documentation assumes some familiarity with programming in the JavaScript language. You don’t have to be an expert, but it’s harder to learn both React and JavaScript at the same time.\nWe recommend going through this JavaScript overview to check your knowledge level. It will take you between 30 minutes and an hour but you will feel more confident learning React.",
+                        style: Theme.of(context).textTheme.bodyText1,
                         lines: 2,
                         fixedFontSize: 14.0,
                       ),
-                      VerticalSpace_S(),
+                      VerticalSpacer(distance: 8.0),
                       FractionallySizedBox(
                         widthFactor: 1.0,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.grey[600],
+                            primary: Color.fromRGBO(44, 49, 55, 1),
                           ),
                           onPressed: () => {},
                           icon: Icon(Icons.subscriptions_outlined),
@@ -179,7 +176,7 @@ class _CoursePageState extends State<CoursePage>
                         widthFactor: 1.0,
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.grey[600],
+                            primary: Color.fromRGBO(44, 49, 55, 1),
                           ),
                           onPressed: () => {},
                           icon: Icon(Icons.check_circle_outlined),
@@ -194,46 +191,65 @@ class _CoursePageState extends State<CoursePage>
                   child: Container(
                     height: MediaQuery.of(context).size.height -
                         MediaQuery.of(context).size.width * 9 / 16,
-                    child: Scaffold(
-                      appBar: AppBar(
-                        title: TabBar(
-                          controller: _tabController,
-                          tabs: <Widget>[
-                            Tab(
-                              child: Text('Contents'),
-                            ),
-                            Tab(
-                              child: Text('Transcript'),
-                            ),
-                          ],
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Color.fromRGBO(44, 49, 55, 1),
+                          child: TabBar(
+                            controller: _tabController,
+                            tabs: <Widget>[
+                              Tab(
+                                child: Text(
+                                  'Contents',
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              ),
+                              Tab(
+                                child: Text(
+                                  'Transcript',
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      body: TabBarView(
-                        controller: _tabController,
-                        children: <Widget>[
-                          Container(
-                            child: ListView.separated(
-                                itemBuilder: (context, index) => LessonListTile(
-                                      id: "89008555-af76-4ad3-8f98-36e4d8704344",
-                                      title:
-                                          "Giới thiệu tổng quát custom hooks (2020) 🚀",
-                                      url:
-                                          "https://youtube.com/embed/8Ee__cUapdg",
-                                      time: 0.18,
-                                      order: 1,
-                                      isPreview: false,
-                                      isPublic: true,
-                                      isDeleted: false,
-                                    ),
-                                separatorBuilder: (context, index) => Divider(),
-                                itemCount: 12),
+                        Expanded(
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: <Widget>[
+                              Container(
+                                child: ListView.separated(
+                                    itemBuilder: (context, index) =>
+                                        LessonListTile(
+                                          id: "89008555-af76-4ad3-8f98-36e4d8704344",
+                                          title:
+                                              "Giới thiệu tổng quát custom hooks (2020) 🚀",
+                                          url:
+                                              "https://youtube.com/embed/8Ee__cUapdg",
+                                          time: 0.18,
+                                          order: 1,
+                                          isPreview: false,
+                                          isPublic: true,
+                                          isDeleted: false,
+                                        ),
+                                    separatorBuilder: (context, index) =>
+                                        Divider(),
+                                    itemCount: 12),
+                              ),
+                              Container(
+                                height: 200.0,
+                                child: Center(
+                                  child: Text(
+                                    'Editor Choice',
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            height: 200.0,
-                            child: Center(child: Text('Editor Choice')),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

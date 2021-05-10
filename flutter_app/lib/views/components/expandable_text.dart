@@ -2,7 +2,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_app/views/components/text_style.dart';
 
 class ExpandableText extends StatefulWidget {
   final String content;
@@ -78,7 +77,7 @@ class _ExpandableTextState extends State<ExpandableText> {
             style: ElevatedButton.styleFrom(
               minimumSize: Size(0.0, 0.0),
               padding: EdgeInsets.all(0.0),
-              primary: Colors.grey[600],
+              primary: Color.fromRGBO(44, 49, 55, 1),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             onPressed: _changeVisibility,

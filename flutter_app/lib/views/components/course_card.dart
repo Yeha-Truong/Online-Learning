@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spaces.dart';
+import 'package:flutter_app/views/components/spacer.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
 
 class CourseCard extends StatelessWidget {
@@ -23,63 +23,71 @@ class CourseCard extends StatelessWidget {
       required this.rating,
       required this.votes})
       : super(key: key);
+
+  _view(context) {
+    Navigator.pushNamed(context, '/course');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 256.0,
-      height: 256.0,
+    return InkWell(
+      onTap: () => _view(context),
       child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 256.0,
-              height: 132.0,
-              child: Image(
-                image: image,
-                fit: BoxFit.fill,
+        child: SizedBox(
+          width: 256.0,
+          height: 256.0,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 256.0,
+                height: 132.0,
+                child: Image(
+                  image: image,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(author),
-                  Row(children: [
-                    Text(level),
-                    TextSeparator_S(),
-                    Text(date),
-                    TextSeparator_S(),
-                    Text(time),
-                  ]),
-                  Row(
-                    children: [
-                      RatingBar(
-                        stars: 5,
-                        rate: rating,
-                        color: Colors.yellow[600],
-                        size: 18.0,
-                        reactable: false,
+              SizedBox(
+                height: 16.0,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextSpace_S(),
-                      Text('($votes)')
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+                    ),
+                    Text(author),
+                    Row(children: [
+                      Text(level),
+                      TextSeparator(distance: 4.0),
+                      Text(date),
+                      TextSeparator(distance: 4.0),
+                      Text(time),
+                    ]),
+                    Row(
+                      children: [
+                        RatingBar(
+                          stars: 5,
+                          rate: rating,
+                          color: Colors.yellow[600],
+                          size: 18.0,
+                          reactable: false,
+                        ),
+                        HorizontalSpacer(distance: 4.0),
+                        Text('($votes)')
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

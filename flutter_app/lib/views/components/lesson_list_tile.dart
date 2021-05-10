@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spaces.dart';
-import 'package:flutter_app/views/components/text_style.dart';
+import 'package:flutter_app/views/components/spacer.dart';
 
+// ignore: must_be_immutable
 class LessonListTile extends StatefulWidget {
   final String id;
   final double order;
@@ -63,7 +63,7 @@ class _LessonListTileState extends State<LessonListTile> {
               child: Container(
                 child: Text(
                   widget.title,
-                  style: CustomTextStyle().TextStyle_M(),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               alignment: Alignment(-2.5, 0.0),
@@ -84,7 +84,7 @@ class _LessonListTileState extends State<LessonListTile> {
               child: Container(
                 child: Text(
                   widget.title,
-                  style: CustomTextStyle().TextStyle_M(),
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
               alignment: Alignment(0, 0.0),
@@ -93,7 +93,7 @@ class _LessonListTileState extends State<LessonListTile> {
               Duration(seconds: (widget.time * 3600).toInt())
                   .toString()
                   .split('.')[0],
-              style: CustomTextStyle().TextStyle_M(),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -106,7 +106,7 @@ class _LessonListTileState extends State<LessonListTile> {
                   ),
                   onTap: () => {},
                 ),
-                TextSpace_S(),
+                HorizontalSpacer(distance: 4.0),
                 InkWell(
                   child: Icon(
                     Icons.more_horiz_rounded,
@@ -137,7 +137,7 @@ class _LessonListTileState extends State<LessonListTile> {
           child: Container(
             child: Text(
               widget.title,
-              style: CustomTextStyle().TextStyle_M(),
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           alignment: Alignment(-2.5, 0.0),

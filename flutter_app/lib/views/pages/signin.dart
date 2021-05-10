@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../components/spaces.dart';
+import '../components/spacer.dart';
 
 class SigninPage extends StatelessWidget {
   void _cancel(context) {
@@ -17,7 +17,9 @@ class SigninPage extends StatelessWidget {
   }
 
   void _sso() {}
-  void _subscribe() {}
+  void _subscribe(context) {
+    Navigator.pushNamed(context, '/signup');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class SigninPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text('Email or username'),
                     ),
-                    VerticalSpace_S(),
+                    VerticalSpacer(distance: 8.0),
                     TextFormField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -66,7 +68,7 @@ class SigninPage extends StatelessWidget {
                   ],
                 ),
               ),
-              VerticalSpace_M(),
+              VerticalSpacer(distance: 16.0),
               Container(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -75,7 +77,7 @@ class SigninPage extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text('Password'),
                     ),
-                    VerticalSpace_S(),
+                    VerticalSpacer(distance: 8.0),
                     TextFormField(
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -93,7 +95,7 @@ class SigninPage extends StatelessWidget {
                   ],
                 ),
               ),
-              VerticalSpace_M(),
+              VerticalSpacer(distance: 16.0),
               Container(
                 child: FractionallySizedBox(
                   widthFactor: 1.0,
@@ -127,7 +129,7 @@ class SigninPage extends StatelessWidget {
                   widthFactor: 1.0,
                   child: OutlinedButton(
                     child: Text('Subscribe to PluralSight'),
-                    onPressed: _subscribe,
+                    onPressed: () => _subscribe(context),
                   ),
                 ),
               ),

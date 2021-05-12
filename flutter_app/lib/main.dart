@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/provider/theme.dart';
 import 'package:flutter_app/views/pages/course.dart';
 import 'package:flutter_app/views/pages/home.dart';
+import 'package:flutter_app/views/pages/management.dart';
 import 'package:flutter_app/views/pages/signin.dart';
 import 'package:flutter_app/views/pages/signup.dart';
+import 'package:flutter_app/views/pages/statistic.dart';
 import 'package:flutter_app/views/pages/support.dart';
+import 'package:flutter_app/views/pages/theme.dart';
 import 'package:flutter_app/views/pages/welcome.dart';
 import 'package:provider/provider.dart';
 
@@ -28,12 +31,16 @@ class MyApp extends StatelessWidget {
           darkTheme: OLTheme.darkTheme,
           initialRoute: '/',
           routes: {
-            '/': (context) => WelcomePage(),
+            // '/': (context) => WelcomePage(),
+            '/': (context) => HomePage(),
             '/home': (context) => HomePage(),
             '/signin': (context) => SigninPage(),
             '/signup': (context) => SignupPage(),
             '/support': (context) => SupportPage(),
             '/course': (context) => CoursePage(),
+            '/management': (context) => ManagementPage(),
+            '/theme': (context) => ThemePage(),
+            '/statistic': (context) => StatisticPage(),
           },
         );
       },

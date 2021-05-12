@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/course_list_tile.dart';
 
-class DownloadFragment extends StatelessWidget {
+class DownloadFragment extends StatefulWidget {
+  @override
+  _DownloadFragmentState createState() => _DownloadFragmentState();
+}
+
+class _DownloadFragmentState extends State<DownloadFragment>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,4 +95,7 @@ class DownloadFragment extends StatelessWidget {
       ]),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

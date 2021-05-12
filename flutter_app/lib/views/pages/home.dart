@@ -10,17 +10,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _index = 0;
-  static List<Widget> _fragments = <Widget>[
+  PageController _pageController = PageController();
+  List<Widget> _pages = <Widget>[
     HomeFragment(),
     DownloadFragment(),
     Container(),
     SearchFragment(),
   ];
 
+  void _onPageChange(index) {
+    setState(() {
+      _index = index;
+    });
+  }
+
+  void _onTap(index) {
+    _pageController.jumpToPage(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _fragments.elementAt(_index),
+      body: PageView(
+        controller: _pageController,
+        children: _pages,
+        onPageChanged: _onPageChange,
+        physics: NeverScrollableScrollPhysics(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -42,11 +58,7 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _index,
         selectedItemColor: Colors.cyanAccent[400],
-        onTap: (index) => {
-          setState(() {
-            _index = index;
-          })
-        },
+        onTap: _onTap,
       ),
     );
   }

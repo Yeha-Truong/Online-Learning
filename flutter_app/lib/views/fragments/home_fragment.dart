@@ -9,7 +9,8 @@ class HomeFragment extends StatefulWidget {
   _HomeFragmentState createState() => _HomeFragmentState();
 }
 
-class _HomeFragmentState extends State<HomeFragment> {
+class _HomeFragmentState extends State<HomeFragment>
+    with AutomaticKeepAliveClientMixin {
   void _signout(context) {
     Navigator.pop(context);
   }
@@ -259,4 +260,7 @@ class _HomeFragmentState extends State<HomeFragment> {
         ),
         body: _buildHomeFragment());
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

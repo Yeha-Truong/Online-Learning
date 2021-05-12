@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/fragments/search_alternative_fragment.dart';
 
-class SearchFragment extends StatelessWidget {
+class SearchFragment extends StatefulWidget {
+  @override
+  _SearchFragmentState createState() => _SearchFragmentState();
+}
+
+class _SearchFragmentState extends State<SearchFragment>
+    with AutomaticKeepAliveClientMixin {
   void _search(context) {
     Navigator.push(
       context,
@@ -56,4 +62,7 @@ class SearchFragment extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

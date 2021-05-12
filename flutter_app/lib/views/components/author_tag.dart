@@ -17,7 +17,7 @@ class AuthorTag extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               color: Color.fromRGBO(44, 49, 55, 1),
-              borderRadius: BorderRadius.all(Radius.circular(18.0))),
+              borderRadius: BorderRadius.all(Radius.circular(16.0))),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [

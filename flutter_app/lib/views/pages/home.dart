@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/fragments/download_fragment.dart';
+import 'package:flutter_app/views/fragments/course_list_fragment.dart';
 import 'package:flutter_app/views/fragments/home_fragment.dart';
-import 'package:flutter_app/views/fragments/search_fragment.dart';
+import 'package:flutter_app/views/pages/management.dart';
+
+class Routes {
+  static const String root = '/';
+  static const String courses = '/courses';
+  static const String management = '/management';
+}
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,56 +15,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _index = 0;
-  PageController _pageController = PageController();
-  List<Widget> _pages = <Widget>[
-    HomeFragment(),
-    DownloadFragment(),
-    Container(),
-    SearchFragment(),
-  ];
-
-  void _onPageChange(index) {
-    setState(() {
-      _index = index;
-    });
-  }
-
-  void _onTap(index) {
-    _pageController.jumpToPage(index);
-  }
-
+  final _key = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: _pages,
-        onPageChanged: _onPageChange,
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.arrow_circle_down_outlined),
-            label: 'Download',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.subscriptions_outlined),
-            label: 'Browse',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-        ],
-        currentIndex: _index,
-        selectedItemColor: Colors.cyanAccent[400],
-        onTap: _onTap,
+    return WillPopScope(
+      onWillPop: () async => !await _key.currentState!.maybePop(),
+      child: Navigator(
+        key: _key,
+        initialRoute: Routes.root,
+        onGenerateRoute: (settings) {
+          WidgetBuilder builder;
+          switch (settings.name) {
+            case Routes.root:
+              builder = (_) => HomeFragment();
+              break;
+            case Routes.courses:
+              builder = (_) => CourseListFragment();
+              break;
+            case Routes.management:
+              builder = (_) => ManagementPage();
+              break;
+            default:
+              throw Exception('Invalid route: ${settings.name}');
+          }
+          return MaterialPageRoute(builder: builder, settings: settings);
+        },
       ),
     );
   }

@@ -10,7 +10,7 @@ class WelcomePage extends StatelessWidget {
   }
 
   void _trail(context) {
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/centre');
   }
 
   @override

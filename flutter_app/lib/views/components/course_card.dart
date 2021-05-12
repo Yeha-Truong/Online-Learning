@@ -25,7 +25,7 @@ class CourseCard extends StatelessWidget {
       : super(key: key);
 
   _view(context) {
-    Navigator.pushNamed(context, '/course');
+    Navigator.of(context, rootNavigator: true).pushNamed('/course');
   }
 
   @override

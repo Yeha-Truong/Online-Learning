@@ -9,7 +9,7 @@ class SigninPage extends StatelessWidget {
 
   void _showPassword() {}
   void _signin(context) {
-    Navigator.pushNamed(context, '/home');
+    Navigator.pushNamed(context, '/centre');
   }
 
   void _help(context) {

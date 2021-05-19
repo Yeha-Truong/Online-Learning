@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/provider/theme.dart';
 import 'package:provider/provider.dart';
 
-class ThemePage extends StatefulWidget {
+class ThemeFragment extends StatefulWidget {
   @override
-  _ThemePageState createState() => _ThemePageState();
+  _ThemeFragmentState createState() => _ThemeFragmentState();
 }
 
-class _ThemePageState extends State<ThemePage> {
+class _ThemeFragmentState extends State<ThemeFragment> {
   void _cancel(context) {
     Navigator.pop(context);
   }

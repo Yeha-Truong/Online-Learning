@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/category_tag.dart';
 import 'package:flutter_app/views/components/spacer.dart';
 
-class StatisticPage extends StatefulWidget {
+class StatisticFragment extends StatefulWidget {
   @override
-  _StatisticPageState createState() => _StatisticPageState();
+  _StatisticFragmentState createState() => _StatisticFragmentState();
 }
 
-class _StatisticPageState extends State<StatisticPage> {
+class _StatisticFragmentState extends State<StatisticFragment> {
   List<String> _interests = ['Javascript', 'Python', 'React'];
 
   @override

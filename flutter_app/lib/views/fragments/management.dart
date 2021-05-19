@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/spacer.dart';
 
-class ManagementPage extends StatefulWidget {
+class ManagementFragment extends StatefulWidget {
   @override
-  _ManagementPageState createState() => _ManagementPageState();
+  _ManagementFragmentState createState() => _ManagementFragmentState();
 }
 
-class _ManagementPageState extends State<ManagementPage> {
+class _ManagementFragmentState extends State<ManagementFragment> {
   bool _stream = false;
 
   bool _download = true;
@@ -146,7 +146,8 @@ class _ManagementPageState extends State<ManagementPage> {
                 ),
                 VerticalSpacer(distance: 32.0),
                 OutlinedButton(
-                  onPressed: () => {},
+                  onPressed: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamedAndRemoveUntil('/welcome', (route) => false),
                   child: Text(
                     'Sign out',
                     style: Theme.of(context).textTheme.bodyText1,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/author_card.dart';
 import 'package:flutter_app/views/components/course_card.dart';
 import 'package:flutter_app/views/components/spacer.dart';
-import 'package:flutter_app/views/fragments/course_list_fragment.dart';
+import 'package:flutter_app/views/fragments/courses.dart';
 
 class HomeFragment extends StatefulWidget {
   @override
@@ -11,10 +11,6 @@ class HomeFragment extends StatefulWidget {
 
 class _HomeFragmentState extends State<HomeFragment>
     with AutomaticKeepAliveClientMixin {
-  void _signout(context) {
-    Navigator.pop(context);
-  }
-
   void _viewAll(context) {
     Navigator.push(
       context,
@@ -230,33 +226,52 @@ class _HomeFragmentState extends State<HomeFragment>
         ],
       );
 
+  void _popUpMenuHandler(value, context) {
+    switch (value) {
+      case 'Account':
+        Navigator.of(context).pushNamed('/management');
+        break;
+      case 'Support':
+        Navigator.of(context, rootNavigator: true).pushNamed('/support');
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text('React'),
-          centerTitle: true,
-          leading: Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              // margin: EdgeInsets.only(left: 8.0),
-              child: GestureDetector(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_left,
-                      size: 32.0,
-                    ),
-                    Text('Back'),
-                  ],
-                ),
-                onTap: () => _signout(context),
+          title: Text('Home'),
+          leadingWidth: 0.0,
+          automaticallyImplyLeading: false,
+          actions: [
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/statistic'),
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/default/takodachi.png'),
+                backgroundColor: Colors.transparent,
+                radius: 12.0,
               ),
             ),
-          ),
-          leadingWidth: 200.0,
-          automaticallyImplyLeading: false,
+            PopupMenuButton<String>(
+              offset: Offset(0.0, 56.0),
+              padding: EdgeInsets.zero,
+              onSelected: (value) => _popUpMenuHandler(value, context),
+              itemBuilder: (context) => [
+                PopupMenuItem<String>(
+                  child: Text('Account'),
+                  value: 'Account',
+                ),
+                PopupMenuItem<String>(
+                  child: Text('Support'),
+                  value: 'Support',
+                )
+              ],
+            )
+          ],
         ),
         body: _buildHomeFragment());
   }

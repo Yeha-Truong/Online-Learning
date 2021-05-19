@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/fragments/download_fragment.dart';
-import 'package:flutter_app/views/fragments/home_fragment.dart';
-import 'package:flutter_app/views/fragments/search_fragment.dart';
+import 'package:flutter_app/views/fragments/download.dart';
+import 'package:flutter_app/views/fragments/search.dart';
 import 'package:flutter_app/views/pages/home.dart';
 
 class CentrePage extends StatefulWidget {

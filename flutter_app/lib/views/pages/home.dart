@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/fragments/course_list_fragment.dart';
-import 'package:flutter_app/views/fragments/home_fragment.dart';
-import 'package:flutter_app/views/pages/management.dart';
+import 'package:flutter_app/views/fragments/courses.dart';
+import 'package:flutter_app/views/fragments/home.dart';
+import 'package:flutter_app/views/fragments/management.dart';
+import 'package:flutter_app/views/fragments/statistic.dart';
+import 'package:flutter_app/views/fragments/theme.dart';
 
 class Routes {
   static const String root = '/';
   static const String courses = '/courses';
   static const String management = '/management';
+  static const String theme = '/theme';
+  static const String statistic = '/statistic';
 }
 
 class HomePage extends StatefulWidget {
@@ -33,7 +37,13 @@ class _HomePageState extends State<HomePage> {
               builder = (_) => CourseListFragment();
               break;
             case Routes.management:
-              builder = (_) => ManagementPage();
+              builder = (_) => ManagementFragment();
+              break;
+            case Routes.statistic:
+              builder = (_) => StatisticFragment();
+              break;
+            case Routes.theme:
+              builder = (_) => ThemeFragment();
               break;
             default:
               throw Exception('Invalid route: ${settings.name}');

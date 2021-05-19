@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spacer.dart';
 
 class CategoryTag extends StatelessWidget {
   final String title;

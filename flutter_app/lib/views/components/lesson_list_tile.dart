@@ -63,7 +63,7 @@ class _LessonListTileState extends State<LessonListTile> {
               child: Container(
                 child: Text(
                   widget.title,
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
               alignment: Alignment(-2.5, 0.0),

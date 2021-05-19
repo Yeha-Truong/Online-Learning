@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/fragments/search_alternative_fragment.dart';
+import 'package:flutter_app/views/fragments/search_alternative.dart';
 
 class SearchFragment extends StatefulWidget {
   @override
@@ -17,6 +17,7 @@ class _SearchFragmentState extends State<SearchFragment>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(128.0),

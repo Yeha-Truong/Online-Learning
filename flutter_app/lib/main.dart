@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/provider/theme.dart';
+import 'package:flutter_app/views/fragments/review.dart';
 import 'package:flutter_app/views/pages/course.dart';
 import 'package:flutter_app/views/pages/centre.dart';
-import 'package:flutter_app/views/pages/management.dart';
 import 'package:flutter_app/views/pages/signin.dart';
 import 'package:flutter_app/views/pages/signup.dart';
-import 'package:flutter_app/views/pages/statistic.dart';
 import 'package:flutter_app/views/pages/support.dart';
-import 'package:flutter_app/views/pages/theme.dart';
 import 'package:flutter_app/views/pages/welcome.dart';
 import 'package:provider/provider.dart';
 
@@ -29,14 +27,15 @@ class MyApp extends StatelessWidget {
           themeMode: theme.themeMode,
           theme: OLTheme.lightTheme,
           darkTheme: OLTheme.darkTheme,
-          initialRoute: '/',
+          initialRoute: '/review',
           routes: {
-            '/': (context) => WelcomePage(),
-            '/centre': (context) => CentrePage(),
+            '/': (context) => CentrePage(),
+            '/welcome': (context) => WelcomePage(),
             '/signin': (context) => SigninPage(),
             '/signup': (context) => SignupPage(),
             '/support': (context) => SupportPage(),
             '/course': (context) => CoursePage(),
+            '/review': (context) => ReviewFragment(),
           },
         );
       },

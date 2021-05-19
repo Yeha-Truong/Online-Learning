@@ -211,7 +211,7 @@ class _CoursePageState extends State<CoursePage>
                                 ),
                                 Tab(
                                   child: Text(
-                                    'Transcript',
+                                    'Reviews',
                                     style:
                                         Theme.of(context).textTheme.subtitle2,
                                   ),

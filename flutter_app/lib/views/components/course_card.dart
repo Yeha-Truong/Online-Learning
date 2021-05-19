@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
 
 class CourseCard extends StatelessWidget {

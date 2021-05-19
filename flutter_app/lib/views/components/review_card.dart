@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 
 class ReviewCard extends StatefulWidget {
   final String name;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/category_tag.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 
 class StatisticFragment extends StatefulWidget {
   @override

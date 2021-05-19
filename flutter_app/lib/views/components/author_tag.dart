@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 
 class AuthorTag extends StatelessWidget {
   final ImageProvider<Object> image;

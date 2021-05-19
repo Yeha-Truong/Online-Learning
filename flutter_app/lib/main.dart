@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/provider/theme.dart';
-import 'package:flutter_app/views/fragments/review.dart';
+import 'package:flutter_app/views/pages/review.dart';
 import 'package:flutter_app/views/pages/course.dart';
 import 'package:flutter_app/views/pages/centre.dart';
 import 'package:flutter_app/views/pages/signin.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           themeMode: theme.themeMode,
           theme: OLTheme.lightTheme,
           darkTheme: OLTheme.darkTheme,
-          initialRoute: '/review',
+          initialRoute: '/course',
           routes: {
             '/': (context) => CentrePage(),
             '/welcome': (context) => WelcomePage(),
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             '/signup': (context) => SignupPage(),
             '/support': (context) => SupportPage(),
             '/course': (context) => CoursePage(),
-            '/review': (context) => ReviewFragment(),
+            '/review': (context) => ReviewPage(),
           },
         );
       },

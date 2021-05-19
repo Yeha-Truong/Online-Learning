@@ -4,7 +4,7 @@ import 'package:flutter_app/views/components/expandable_text.dart';
 import 'package:flutter_app/views/components/lesson_list_tile.dart';
 import 'package:flutter_app/views/components/sticky_widget.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 import 'package:flutter_app/views/components/video_player.dart';
 
 class CoursePage extends StatefulWidget {
@@ -187,6 +187,18 @@ class _CoursePageState extends State<CoursePage>
                             label: Text('Take a learning check'),
                           ),
                         ),
+                        FractionallySizedBox(
+                          widthFactor: 1.0,
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color.fromRGBO(44, 49, 55, 1),
+                            ),
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/review'),
+                            icon: Icon(Icons.rate_review_outlined),
+                            label: Text('Course reviews'),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -211,7 +223,7 @@ class _CoursePageState extends State<CoursePage>
                                 ),
                                 Tab(
                                   child: Text(
-                                    'Reviews',
+                                    'Transcript',
                                     style:
                                         Theme.of(context).textTheme.subtitle2,
                                   ),

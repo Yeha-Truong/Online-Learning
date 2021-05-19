@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/author_card.dart';
 import 'package:flutter_app/views/components/course_card.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 import 'package:flutter_app/views/fragments/courses.dart';
 
 class HomeFragment extends StatefulWidget {
@@ -251,9 +251,13 @@ class _HomeFragmentState extends State<HomeFragment>
             GestureDetector(
               onTap: () => Navigator.pushNamed(context, '/statistic'),
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/default/takodachi.png'),
                 backgroundColor: Colors.transparent,
-                radius: 12.0,
+                child: ClipRRect(
+                  child:
+                      Image(image: AssetImage('assets/default/takodachi.png')),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                radius: 16.0,
               ),
             ),
             PopupMenuButton<String>(

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
 import 'package:flutter_app/views/components/rating_percentage.dart';
 import 'package:flutter_app/views/components/review_card.dart';
-import 'package:flutter_app/views/components/spacer.dart';
+import 'package:flutter_app/views/utils/spacer.dart';
 
-class ReviewFragment extends StatefulWidget {
+class ReviewPage extends StatefulWidget {
   @override
-  _ReviewFragmentState createState() => _ReviewFragmentState();
+  _ReviewPageState createState() => _ReviewPageState();
 }
 
-class _ReviewFragmentState extends State<ReviewFragment> {
+class _ReviewPageState extends State<ReviewPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _review = TextEditingController();
 
@@ -211,18 +211,28 @@ class _ReviewFragmentState extends State<ReviewFragment> {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) => ReviewCard(
-                        name: _reviews[index]['name'],
-                        image: _reviews[index]['image'],
-                        rate: _reviews[index]['rate'],
-                        date: _reviews[index]['date'],
-                        review: _reviews[index]['review'],
-                      ),
-                      itemCount: _reviews.length,
-                    ),
+                    _reviews.isNotEmpty
+                        ? ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) => ReviewCard(
+                              name: _reviews[index]['name'],
+                              image: _reviews[index]['image'],
+                              rate: _reviews[index]['rate'],
+                              date: _reviews[index]['date'],
+                              review: _reviews[index]['review'],
+                            ),
+                            itemCount: _reviews.length,
+                          )
+                        : Container(
+                            margin: EdgeInsets.symmetric(vertical: 32.0),
+                            child: Center(
+                              child: Text(
+                                "This course have not been reviewed",
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                          ),
                     Container(
                       height: isLoading ? 50.0 : 0,
                       color: Colors.transparent,

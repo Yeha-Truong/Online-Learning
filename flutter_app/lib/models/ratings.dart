@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import 'rating_list.dart';
+import 'rating.dart';
 
 class Ratings extends Equatable {
-  final List<RatingList>? ratingList;
+  final List<Rating>? ratingList;
   final List<int>? stars;
 
   const Ratings({this.ratingList, this.stars});
@@ -11,7 +11,7 @@ class Ratings extends Equatable {
   factory Ratings.fromJson(Map<String, dynamic> json) {
     return Ratings(
       ratingList: (json['ratingList'] as List<dynamic>?)
-          ?.map((e) => RatingList.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Rating.fromJson(e as Map<String, dynamic>))
           .toList(),
       stars: json['stars'] as List<int>?,
     );
@@ -25,7 +25,7 @@ class Ratings extends Equatable {
   }
 
   Ratings copyWith({
-    List<RatingList>? ratingList,
+    List<Rating>? ratingList,
     List<int>? stars,
   }) {
     return Ratings(

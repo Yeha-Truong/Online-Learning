@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/models.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
 import 'package:flutter_app/views/components/rating_percentage.dart';
 import 'package:flutter_app/views/components/review_card.dart';
@@ -13,22 +16,36 @@ class _ReviewPageState extends State<ReviewPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _review = TextEditingController();
 
-  List<dynamic> _reviews = [];
+  CourseDetail? _detail;
+
+  List<Rating> _reviews = [];
+  int _index = 0;
+  int _offset = 9;
+
   bool isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      _detail = ModalRoute.of(context)!.settings.arguments as CourseDetail;
+      _handleLoading();
+    }
+    super.didChangeDependencies();
+  }
+
+  void _handleLoading() {
+    if (_index < _detail!.ratings!.ratingList!.length) {
+      _reviews.addAll(_detail!.ratings!.ratingList!.sublist(
+          _index, min(_index + _offset, _detail!.ratings!.ratingList!.length)));
+      _index += _offset + 1;
+    }
+  }
 
   Future _loadReviews() async {
     await new Future.delayed(new Duration(seconds: 2));
 
     setState(() {
-      Map<String, dynamic> review = {
-        'name': 'Takodachi',
-        'image': Image.asset('assets/default/takodachi.png'),
-        'rate': 5.0,
-        'date': 'Tuesday 18 May 2021',
-        'review':
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mollis massa tellus. Maecenas tempor luctus euismod. Vivamus nec efficitur turpis. Duis nisl arcu, luctus vel quam non, vehicula fermentum quam. Cras tincidunt ligula eget maximus vehicula. Nam aliquet metus eu metus blandit, et efficitur quam feugiat. Phasellus tristique est purus, sed pellentesque ipsum egestas vel. Nulla et vestibulum est. Nullam maximus mi ac neque sagittis, vestibulum mattis dui dapibus. In mollis orci vitae sem ornare, et fermentum ipsum hendrerit. Duis non accumsan elit, nec condimentum nibh. Mauris sed risus odio.'
-      };
-      _reviews.addAll([review, review, review]);
+      _handleLoading();
       isLoading = false;
     });
   }
@@ -68,26 +85,26 @@ class _ReviewPageState extends State<ReviewPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          '4.8',
+                          _detail!.averagePoint.toString(),
                           style: Theme.of(context).textTheme.headline3,
                         ),
                         Text(
-                          '(2 ratings)',
+                          '(${_detail!.ratedNumber} ratings)',
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '5.0 Formality',
+                              '${_detail!.formalityPoint} Formality',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             Text(
-                              '4.5 Content',
+                              '${_detail!.contentPoint} Content',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                             Text(
-                              '5.0 Presentation',
+                              '${_detail!.presentationPoint} Presentation',
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ],
@@ -100,11 +117,31 @@ class _ReviewPageState extends State<ReviewPage> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            RatingPercentageBar(value: 5, percent: 0.89),
-                            RatingPercentageBar(value: 4, percent: 0.05),
-                            RatingPercentageBar(value: 3, percent: 0.03),
-                            RatingPercentageBar(value: 2, percent: 0.02),
-                            RatingPercentageBar(value: 1, percent: 0.01),
+                            RatingPercentageBar(
+                                value: 5,
+                                percent:
+                                    _detail!.ratings!.stars![4].toDouble() /
+                                        100),
+                            RatingPercentageBar(
+                                value: 4,
+                                percent:
+                                    _detail!.ratings!.stars![3].toDouble() /
+                                        100),
+                            RatingPercentageBar(
+                                value: 3,
+                                percent:
+                                    _detail!.ratings!.stars![2].toDouble() /
+                                        100),
+                            RatingPercentageBar(
+                                value: 2,
+                                percent:
+                                    _detail!.ratings!.stars![1].toDouble() /
+                                        100),
+                            RatingPercentageBar(
+                                value: 1,
+                                percent:
+                                    _detail!.ratings!.stars![0].toDouble() /
+                                        100),
                           ],
                         ),
                       ),
@@ -127,7 +164,7 @@ class _ReviewPageState extends State<ReviewPage> {
                       margin: EdgeInsets.symmetric(vertical: 8.0),
                       child: RatingBar(
                         color: Colors.yellow,
-                        rate: 5,
+                        rate: 0,
                         reactable: true,
                         stars: 5,
                       ),
@@ -216,11 +253,12 @@ class _ReviewPageState extends State<ReviewPage> {
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemBuilder: (context, index) => ReviewCard(
-                              name: _reviews[index]['name'],
-                              image: _reviews[index]['image'],
-                              rate: _reviews[index]['rate'],
-                              date: _reviews[index]['date'],
-                              review: _reviews[index]['review'],
+                              name: _reviews[index].user!.name.toString(),
+                              image: Image.network(
+                                  _reviews[index].user!.avatar.toString()),
+                              rate: _reviews[index].averagePoint!.toDouble(),
+                              date: _reviews[index].updatedAt.toString(),
+                              review: _reviews[index].content.toString(),
                             ),
                             itemCount: _reviews.length,
                           )

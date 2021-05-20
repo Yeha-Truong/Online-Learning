@@ -1,25 +1,50 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/course_detail.dart';
+import 'package:flutter_app/models/lesson.dart';
 import 'package:flutter_app/views/components/author_tag.dart';
 import 'package:flutter_app/views/components/expandable_text.dart';
-import 'package:flutter_app/views/components/lesson_list_tile.dart';
+import 'package:flutter_app/views/components/section_tile.dart';
 import 'package:flutter_app/views/components/sticky_widget.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
+import 'package:flutter_app/views/components/youtube_video_player..dart';
+import 'package:flutter_app/views/utils/converter.dart';
 import 'package:flutter_app/views/utils/spacer.dart';
-import 'package:flutter_app/views/components/video_player.dart';
+import 'package:flutter_app/views/components/chewie_video_player.dart';
 
 class CoursePage extends StatefulWidget {
   @override
   _CoursePageState createState() => _CoursePageState();
+
+  static _CoursePageState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_CoursePageState>();
 }
 
 class _CoursePageState extends State<CoursePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late CourseDetail _detail;
+  Lesson? _lesson;
+
+  set lesson(value) {
+    setState(() {
+      _lesson = value;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, length: 2);
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      _detail = ModalRoute.of(context)!.settings.arguments as CourseDetail;
+    }
+    super.didChangeDependencies();
   }
 
   @override
@@ -32,10 +57,17 @@ class _CoursePageState extends State<CoursePage>
         body: CustomScrollView(
           slivers: [
             StickyWidget(
-              widget: ChewieVideoPlayer(
-                url:
-                    'https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4',
-              ),
+              widget: _lesson == null
+                  ? (_detail.promoVidUrl!.contains('.mp4')
+                      ? ChewieVideoPlayer(url: _detail.promoVidUrl.toString())
+                      : YoutubeVideoPlayer(
+                          url: _detail.promoVidUrl.toString(),
+                        ))
+                  : (_lesson!.videoUrl!.contains('.mp4')
+                      ? ChewieVideoPlayer(url: _lesson!.videoUrl!)
+                      : YoutubeVideoPlayer(
+                          url: _lesson!.videoUrl!,
+                        )),
               minHeight: MediaQuery.of(context).size.width * 9 / 16,
               maxHeight: MediaQuery.of(context).size.width * 9 / 16,
             ),
@@ -50,39 +82,41 @@ class _CoursePageState extends State<CoursePage>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'React: The Big Picture',
+                          _detail.title.toString(),
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
+                        VerticalSpacer(distance: 4.0),
+                        Text(_detail.subtitle.toString(),
+                            style: Theme.of(context).textTheme.caption),
                         VerticalSpacer(distance: 16.0),
                         AuthorTag(
-                          image: AssetImage('assets/default/takodachi.png'),
-                          author: 'Cory House',
+                          image: NetworkImage(
+                              _detail.instructor!.avatar.toString()),
+                          author: _detail.instructor!.name.toString(),
                         ),
                         VerticalSpacer(distance: 16.0),
                         Row(
                           children: [
-                            Text('Beginner',
-                                style: Theme.of(context).textTheme.caption),
-                            TextSeparator(distance: 4.0),
                             Text(
-                              'November 21, 2017',
+                              OLConverter.date(_detail.updatedAt).toString(),
                               style: Theme.of(context).textTheme.caption,
                             ),
                             TextSeparator(distance: 4.0),
                             Text(
-                              '1h 11m',
+                              OLConverter.time(_detail.totalHours),
                               style: Theme.of(context).textTheme.caption,
                             ),
                             HorizontalSpacer(distance: 4.0),
                             RatingBar(
                               color: Colors.yellow[600],
-                              rate: 5.0,
+                              rate:
+                                  double.parse(_detail.averagePoint.toString()),
                               reactable: false,
                               size: 12.0,
                             ),
                             HorizontalSpacer(distance: 4.0),
                             Text(
-                              '(459)',
+                              "(${_detail.ratedNumber.toString()})",
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ],
@@ -158,10 +192,9 @@ class _CoursePageState extends State<CoursePage>
                         ),
                         VerticalSpacer(distance: 8.0),
                         ExpandableText(
-                          content:
-                              "Learn React\nPeople come to React from different backgrounds and with different learning styles. Whether you prefer a more theoretical or a practical approach, we hope you’ll find this section helpful.\nIf you prefer to learn by doing, start with our practical tutorial.\nIf you prefer to learn concepts step by step, start with our guide to main concepts.\nLike any unfamiliar technology, React does have a learning curve. With practice and some patience, you will get the hang of it.\nFirst Examples\nThe React homepage contains a few small React examples with a live editor. Even if you don’t know anything about React yet, try changing their code and see how it affects the result.\nReact for Beginners\nIf you feel that the React documentation goes at a faster pace than you’re comfortable with, check out this overview of React by Tania Rascia. It introduces the most important React concepts in a detailed, beginner-friendly way. Once you’re done, give the documentation another try!\nReact for Designers\nIf you’re coming from a design background, these resources are a great place to get started.\nJavaScript Resources\nThe React documentation assumes some familiarity with programming in the JavaScript language. You don’t have to be an expert, but it’s harder to learn both React and JavaScript at the same time.\nWe recommend going through this JavaScript overview to check your knowledge level. It will take you between 30 minutes and an hour but you will feel more confident learning React.",
+                          content: _detail.description.toString(),
                           style: Theme.of(context).textTheme.bodyText1,
-                          lines: 2,
+                          lines: 3,
                           fixedFontSize: 14.0,
                         ),
                         VerticalSpacer(distance: 8.0),
@@ -187,18 +220,20 @@ class _CoursePageState extends State<CoursePage>
                             label: Text('Take a learning check'),
                           ),
                         ),
-                        FractionallySizedBox(
-                          widthFactor: 1.0,
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(44, 49, 55, 1),
+                        if (_detail.ratings != null)
+                          FractionallySizedBox(
+                            widthFactor: 1.0,
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color.fromRGBO(44, 49, 55, 1),
+                              ),
+                              onPressed: () => Navigator.pushNamed(
+                                  context, '/review',
+                                  arguments: _detail),
+                              icon: Icon(Icons.rate_review_outlined),
+                              label: Text('Course reviews'),
                             ),
-                            onPressed: () =>
-                                Navigator.pushNamed(context, '/review'),
-                            icon: Icon(Icons.rate_review_outlined),
-                            label: Text('Course reviews'),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -235,30 +270,33 @@ class _CoursePageState extends State<CoursePage>
                             child: TabBarView(
                               controller: _tabController,
                               children: <Widget>[
-                                Container(
-                                  child: ListView.separated(
-                                      itemBuilder: (context, index) =>
-                                          LessonListTile(
-                                            id: "89008555-af76-4ad3-8f98-36e4d8704344",
-                                            title:
-                                                "Giới thiệu tổng quát custom hooks (2020) 🚀",
-                                            url:
-                                                "https://youtube.com/embed/8Ee__cUapdg",
-                                            time: 0.18,
-                                            order: 1,
-                                            isPreview: false,
-                                            isPublic: true,
-                                            isDeleted: false,
+                                _detail.section != null
+                                    ? Container(
+                                        child: ListView.separated(
+                                            itemBuilder: (context, index) =>
+                                                SectionTile(
+                                                    section: _detail
+                                                        .section![index]),
+                                            separatorBuilder:
+                                                (context, index) => Divider(),
+                                            itemCount: _detail.section!.length),
+                                      )
+                                    : Container(
+                                        height: 200.0,
+                                        child: Center(
+                                          child: Text(
+                                            'Buy course to unlock',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2,
                                           ),
-                                      separatorBuilder: (context, index) =>
-                                          Divider(),
-                                      itemCount: 12),
-                                ),
+                                        ),
+                                      ),
                                 Container(
                                   height: 200.0,
                                   child: Center(
                                     child: Text(
-                                      'Editor Choice',
+                                      'Empty',
                                       style:
                                           Theme.of(context).textTheme.subtitle2,
                                     ),

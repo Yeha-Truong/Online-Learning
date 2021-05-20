@@ -15,7 +15,7 @@ class ChewieVideoPlayer extends StatefulWidget {
 }
 
 class _ChewieVideoPlayerState extends State<ChewieVideoPlayer> {
-  late VideoPlayerController _videoPlayerController1;
+  late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
 
   @override
@@ -25,23 +25,29 @@ class _ChewieVideoPlayerState extends State<ChewieVideoPlayer> {
   }
 
   @override
+  void deactivate() {
+    // _chewieController?.pause();
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
-    _videoPlayerController1.dispose();
+    _videoPlayerController.dispose();
     _chewieController?.dispose();
     super.dispose();
   }
 
   Future<void> initializePlayer() async {
-    _videoPlayerController1 = VideoPlayerController.network(widget.url);
-    await Future.wait([_videoPlayerController1.initialize()]);
+    _videoPlayerController = VideoPlayerController.network(widget.url);
+    await Future.wait([_videoPlayerController.initialize()]);
     _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController1,
-      autoPlay: true,
-      looping: true,
+      videoPlayerController: _videoPlayerController,
+      autoPlay: false,
+      looping: false,
       //showControls: false,
       autoInitialize: true,
-      allowFullScreen: false,
-      allowMuting: false,
+      allowFullScreen: true,
+      allowMuting: true,
       aspectRatio: 16 / 9,
     );
     setState(() {});

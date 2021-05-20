@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class JBMessage {
+class OLMessage {
   static showLinearDialog(context) {
     return showDialog(
       context: context,

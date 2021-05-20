@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
           themeMode: theme.themeMode,
           theme: OLTheme.lightTheme,
           darkTheme: OLTheme.darkTheme,
-          initialRoute: '/course',
+          initialRoute: '/',
           routes: {
             '/': (context) => CentrePage(),
             '/welcome': (context) => WelcomePage(),

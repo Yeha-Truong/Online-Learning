@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
+import 'package:flutter_app/views/utils/converter.dart';
 import 'package:flutter_app/views/utils/spacer.dart';
 
 class ReviewCard extends StatefulWidget {
@@ -64,17 +65,16 @@ class _ReviewCardState extends State<ReviewCard> {
                           backgroundColor: Colors.transparent,
                           child: ClipRRect(
                             child: widget.image,
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(50.0),
                           ),
                           radius: 24.0,
                         ),
                       ),
-                      Container(
-                        child: AutoSizeText(
-                          'Takodachi',
-                          style: Theme.of(context).textTheme.bodyText1,
-                          textAlign: TextAlign.center,
-                        ),
+                      VerticalSpacer(distance: 4.0),
+                      AutoSizeText(
+                        widget.name,
+                        style: Theme.of(context).textTheme.bodyText1,
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -93,7 +93,7 @@ class _ReviewCardState extends State<ReviewCard> {
                       ),
                       VerticalSpacer(distance: 2.0),
                       AutoSizeText(
-                        widget.date,
+                        OLConverter.date(widget.date),
                         style: Theme.of(context).textTheme.caption,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

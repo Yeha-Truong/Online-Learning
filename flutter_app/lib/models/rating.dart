@@ -6,14 +6,14 @@ class Rating extends Equatable {
   final String? id;
   final String? userId;
   final String? courseId;
-  final int? formalityPoint;
-  final int? contentPoint;
-  final int? presentationPoint;
+  final double? formalityPoint;
+  final double? contentPoint;
+  final double? presentationPoint;
   final String? content;
   final String? createdAt;
   final String? updatedAt;
   final User? user;
-  final int? averagePoint;
+  final double? averagePoint;
 
   const Rating({
     this.id,
@@ -34,16 +34,16 @@ class Rating extends Equatable {
       id: json['id'] as String?,
       userId: json['userId'] as String?,
       courseId: json['courseId'] as String?,
-      formalityPoint: json['formalityPoint'] as int?,
-      contentPoint: json['contentPoint'] as int?,
-      presentationPoint: json['presentationPoint'] as int?,
+      formalityPoint: double.parse(json['formalityPoint'].toString()),
+      contentPoint: double.parse(json['contentPoint'].toString()),
+      presentationPoint: double.parse(json['presentationPoint'].toString()),
       content: json['content'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
-      averagePoint: json['averagePoint'] as int?,
+      averagePoint: double.parse(json['averagePoint'].toString()),
     );
   }
 
@@ -67,14 +67,14 @@ class Rating extends Equatable {
     String? id,
     String? userId,
     String? courseId,
-    int? formalityPoint,
-    int? contentPoint,
-    int? presentationPoint,
+    double? formalityPoint,
+    double? contentPoint,
+    double? presentationPoint,
     String? content,
     String? createdAt,
     String? updatedAt,
     User? user,
-    int? averagePoint,
+    double? averagePoint,
   }) {
     return Rating(
       id: id ?? this.id,

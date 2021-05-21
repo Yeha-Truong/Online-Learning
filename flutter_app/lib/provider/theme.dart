@@ -39,6 +39,9 @@ class OLTheme {
         ),
       ),
     ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: Colors.black,
+    ),
     cardColor: Color.fromRGBO(44, 49, 55, 1),
     primaryColor: Color.fromRGBO(44, 49, 55, 1),
   );

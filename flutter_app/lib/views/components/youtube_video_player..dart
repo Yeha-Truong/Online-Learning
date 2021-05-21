@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -17,6 +15,7 @@ class YoutubeVideoPlayer extends StatefulWidget {
 
 class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
   YoutubePlayerController? _controller;
+  String? _currentId;
 
   @override
   void initState() {
@@ -30,6 +29,13 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
         mute: false,
       ),
     );
+    _currentId = YoutubePlayer.convertUrlToId(widget.url).toString();
+  }
+
+  @override
+  void deactivate() {
+    _controller!.pause();
+    super.deactivate();
   }
 
   @override
@@ -38,8 +44,17 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
     super.dispose();
   }
 
+  void _updatePlayer() {
+    if (_controller != null) if (_currentId !=
+        YoutubePlayer.convertUrlToId(widget.url)) {
+      _controller!.load(YoutubePlayer.convertUrlToId(widget.url).toString());
+      _currentId = YoutubePlayer.convertUrlToId(widget.url).toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _updatePlayer();
     return Center(
       child: Container(
         height: MediaQuery.of(context).size.width * 9 / 16,

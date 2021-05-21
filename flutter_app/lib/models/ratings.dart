@@ -13,7 +13,7 @@ class Ratings extends Equatable {
       ratingList: (json['ratingList'] as List<dynamic>?)
           ?.map((e) => Rating.fromJson(e as Map<String, dynamic>))
           .toList(),
-      stars: json['stars'] as List<int>?,
+      stars: List<int>.from(json['stars']),
     );
   }
 

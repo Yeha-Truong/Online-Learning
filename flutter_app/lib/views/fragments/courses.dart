@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/components/course_list_tile.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_app/models/course_info.dart';
+import 'package:flutter_app/networking/blocs/blocs.dart';
+import 'package:flutter_app/networking/repository/courses_repository.dart';
+import 'package:flutter_app/networking/response.dart';
+import 'package:flutter_app/views/components/course_tile.dart';
 
 class CourseListFragment extends StatefulWidget {
   @override
@@ -7,15 +12,49 @@ class CourseListFragment extends StatefulWidget {
 }
 
 class _CourseListFragmentState extends State<CourseListFragment> {
-  void _cancel(context) {
-    Navigator.of(context).pop();
+  late CoursesType _type;
+  late CoursesBloc _bloc;
+  late String _title;
+
+  List<CourseInfo> _courses = [];
+  int _page = 1;
+  int _offset = 10;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = CoursesBloc();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      _type = ModalRoute.of(context)!.settings.arguments as CoursesType;
+      _bloc.topCourses(_type, _offset, _page);
+      switch (_type) {
+        case CoursesType.NEW:
+          _title = 'New';
+          break;
+        case CoursesType.RATE:
+          _title = 'Top Rate';
+          break;
+        case CoursesType.SELL:
+          _title = 'Top Selling';
+          break;
+        default:
+          _title = '';
+          break;
+      }
+    }
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('New'),
+        title: Text(_title),
         centerTitle: true,
         leading: Align(
           alignment: Alignment.centerLeft,
@@ -29,73 +68,76 @@ class _CourseListFragmentState extends State<CourseListFragment> {
                     Icons.keyboard_arrow_left,
                     size: 32.0,
                   ),
-                  Text('React'),
+                  Text('Home'),
                 ],
               ),
-              onTap: () => _cancel(context),
+              onTap: () => Navigator.pop(context),
             ),
           ),
         ),
-        leadingWidth: 200.0,
+        leadingWidth: 150.0,
         automaticallyImplyLeading: false,
       ),
       body: Container(
         margin: EdgeInsets.only(top: 8.0),
-        child: ListView(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            CourseListTile(
-                image: AssetImage('assets/default/takodachi.png'),
-                title: 'Building Applications with React and Flux',
-                author: 'Cory House',
-                level: 'Intermediate',
-                date: 'Jun 19, 2019',
-                time: '5h11m',
-                rating: 5),
-            Divider(),
-            CourseListTile(
-                image: AssetImage('assets/default/takodachi.png'),
-                title: 'Building Applications with React and Flux',
-                author: 'Cory House',
-                level: 'Intermediate',
-                date: 'Mar 12, 2019',
-                time: '6h39m',
-                rating: 5),
-            Divider(),
-            CourseListTile(
-                image: AssetImage('assets/default/takodachi.png'),
-                title: 'Client Side React Router 4',
-                author: 'David Starr',
-                level: 'Intermediate',
-                date: 'Mar 2, 2018',
-                time: '1h59m',
-                rating: 4.5),
-            Divider(),
-            CourseListTile(
-                image: AssetImage('assets/default/takodachi.png'),
-                title: 'Advanced React.js',
-                author: 'Samer Buna',
-                level: 'Advanced',
-                date: 'Jun 21, 2017',
-                time: '3h55m',
-                rating: 4.5),
-            Divider(),
-            CourseListTile(
-                image: AssetImage('assets/default/takodachi.png'),
-                title: 'Using ASP.NET Core to Build Sing-page Applications',
-                author: 'Ajden Towfeek',
-                level: 'Beginner',
-                date: 'Apr 12, 2017',
-                time: '2h',
-                rating: 4.0),
-            Divider(),
-            CourseListTile(
-                image: AssetImage('assets/default/takodachi.png'),
-                title: 'Mastering Flux and Redux',
-                author: 'Cory House',
-                level: 'Intermediate',
-                date: 'Jun 2019',
-                time: '6h',
-                rating: 4.5),
+            Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (!_loading &&
+                      notification.metrics.pixels ==
+                          notification.metrics.maxScrollExtent) {
+                    _bloc = CoursesBloc();
+                    _bloc.topCourses(_type, _offset, _page);
+
+                    setState(() {
+                      _loading = true;
+                    });
+                  }
+                  return true;
+                },
+                child: ListView.separated(
+                  itemBuilder: (context, index) => CourseTile(
+                    info: _courses[index],
+                  ),
+                  separatorBuilder: (context, index) => Divider(),
+                  itemCount: _courses.length,
+                ),
+              ),
+            ),
+            StreamBuilder<Response<List<CourseInfo>>>(
+              stream: _bloc.courseStream,
+              builder: (context, snapshot) {
+                if (snapshot.hasData)
+                  switch (snapshot.data!.status) {
+                    case Status.LOADING:
+                      return Container(
+                        margin: EdgeInsets.all(4.0),
+                        child: CircularProgressIndicator(),
+                      );
+                    case Status.COMPLETED:
+                      if (_loading && snapshot.data!.data!.isNotEmpty) {
+                        _courses = _courses + snapshot.data!.data!.toList();
+                        _page += 1;
+                        _loading = false;
+                      }
+                      SchedulerBinding.instance!.addPostFrameCallback((_) {
+                        setState(() {});
+                      });
+                      return Container();
+                    case Status.ERROR:
+                      return Container();
+                    default:
+                      return Container(
+                        margin: EdgeInsets.all(4.0),
+                        child: CircularProgressIndicator(),
+                      );
+                  }
+                return Container();
+              },
+            ),
           ],
         ),
       ),

@@ -4,6 +4,7 @@ class OLMessage {
   static showLinearDialog(context) {
     return showDialog(
       context: context,
+      useRootNavigator: true,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         content: LinearProgressIndicator(),

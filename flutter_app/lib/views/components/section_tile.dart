@@ -5,22 +5,25 @@ import 'package:flutter_app/views/components/lesson_tile.dart';
 // ignore: must_be_immutable
 class SectionTile extends StatefulWidget {
   final Section section;
-  bool isFocus;
 
-  SectionTile({
-    required this.section,
-    this.isFocus = false,
-  });
+  SectionTile({required this.section});
 
   @override
   _SectionTileState createState() => _SectionTileState();
 }
 
 class _SectionTileState extends State<SectionTile> {
+  late bool _isFocus;
   void _onTap() {
     setState(() {
-      widget.isFocus = !widget.isFocus;
+      _isFocus = !_isFocus;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isFocus = false;
   }
 
   Widget _build() {
@@ -41,7 +44,7 @@ class _SectionTileState extends State<SectionTile> {
               style: Theme.of(context).textTheme.subtitle2),
         ),
         Divider(),
-        if (widget.isFocus)
+        if (_isFocus)
           ListView.builder(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

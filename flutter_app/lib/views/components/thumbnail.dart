@@ -40,6 +40,7 @@ Future<ThumbnailResult> genThumbnail(ThumbnailRequest r) async {
   //WidgetsFlutterBinding.ensureInitialized();
   Uint8List bytes;
   final Completer<ThumbnailResult> completer = Completer();
+  // ignore: unnecessary_null_comparison
   if (r.thumbnailPath != null) {
     final thumbnailPath = await VideoThumbnail.thumbnailFile(
         video: r.video,
@@ -98,9 +99,6 @@ class _ThumbnailState extends State<Thumbnail> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
           final _image = snapshot.data.image;
-          final _width = snapshot.data.width;
-          final _height = snapshot.data.height;
-          final _dataSize = snapshot.data.dataSize;
           return _image;
         } else if (snapshot.hasError) {
           return Container(

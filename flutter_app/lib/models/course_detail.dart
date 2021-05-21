@@ -17,9 +17,9 @@ class CourseDetail extends Equatable {
   final int? ratedNumber;
   final int? videoNumber;
   final double? totalHours;
-  final int? formalityPoint;
-  final int? contentPoint;
-  final int? presentationPoint;
+  final double? formalityPoint;
+  final double? contentPoint;
+  final double? presentationPoint;
   final String? imageUrl;
   final String? promoVidUrl;
   final String? status;
@@ -71,15 +71,15 @@ class CourseDetail extends Equatable {
       subtitle: json['subtitle'] as String?,
       price: json['price'] as int?,
       description: json['description'] as String?,
-      requirement: json['requirement'] as List<String>?,
-      learnWhat: json['learnWhat'] as List<String>?,
+      requirement: List<String>.from(json['requirement']),
+      learnWhat: List<String>.from(json['learnWhat']),
       soldNumber: json['soldNumber'] as int?,
       ratedNumber: json['ratedNumber'] as int?,
       videoNumber: json['videoNumber'] as int?,
       totalHours: json['totalHours'] as double?,
-      formalityPoint: json['formalityPoint'] as int?,
-      contentPoint: json['contentPoint'] as int?,
-      presentationPoint: json['presentationPoint'] as int?,
+      formalityPoint: double.parse(json['formalityPoint'].toString()),
+      contentPoint: double.parse(json['contentPoint'].toString()),
+      presentationPoint: double.parse(json['presentationPoint'].toString()),
       imageUrl: json['imageUrl'] as String?,
       promoVidUrl: json['promoVidUrl'] as String?,
       status: json['status'] as String?,
@@ -149,9 +149,9 @@ class CourseDetail extends Equatable {
     int? ratedNumber,
     int? videoNumber,
     double? totalHours,
-    int? formalityPoint,
-    int? contentPoint,
-    int? presentationPoint,
+    double? formalityPoint,
+    double? contentPoint,
+    double? presentationPoint,
     String? imageUrl,
     String? promoVidUrl,
     String? status,

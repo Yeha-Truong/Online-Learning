@@ -15,7 +15,7 @@ class Instructor extends Equatable {
   final String? createdAt;
   final String? updatedAt;
   final int? totalCourse;
-  final int? averagePoint;
+  final double? averagePoint;
   final int? countRating;
   final int? ratedNumber;
   final int? soldNumber;
@@ -51,11 +51,11 @@ class Instructor extends Equatable {
       phone: json['phone'] as String?,
       major: json['major'] as String?,
       intro: json['intro'] as String?,
-      skills: json['skills'] as List<String>?,
+      skills: List<String>.from(json['skills']),
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
       totalCourse: json['totalCourse'] as int?,
-      averagePoint: json['averagePoint'] as int?,
+      averagePoint: double.parse(json['averagePoint'].toString()),
       countRating: json['countRating'] as int?,
       ratedNumber: json['ratedNumber'] as int?,
       soldNumber: json['soldNumber'] as int?,
@@ -100,7 +100,7 @@ class Instructor extends Equatable {
     String? createdAt,
     String? updatedAt,
     int? totalCourse,
-    int? averagePoint,
+    double? averagePoint,
     int? countRating,
     int? ratedNumber,
     int? soldNumber,

@@ -12,9 +12,9 @@ class CourseInfo extends Equatable {
   final int? ratedNumber;
   final int? videoNumber;
   final double? totalHours;
-  final int? formalityPoint;
-  final int? contentPoint;
-  final int? presentationPoint;
+  final double? formalityPoint;
+  final double? contentPoint;
+  final double? presentationPoint;
   final String? imageUrl;
   final String? promoVidUrl;
   final String? status;
@@ -24,6 +24,8 @@ class CourseInfo extends Equatable {
   final String? instructorId;
   final int? typeUploadVideoLesson;
   final List<String>? categoryIds;
+  final String? instructorUserId;
+  final String? instructorUserName;
 
   const CourseInfo({
     this.id,
@@ -49,6 +51,8 @@ class CourseInfo extends Equatable {
     this.instructorId,
     this.typeUploadVideoLesson,
     this.categoryIds,
+    this.instructorUserId,
+    this.instructorUserName,
   });
 
   factory CourseInfo.fromJson(Map<String, dynamic> json) {
@@ -58,15 +62,15 @@ class CourseInfo extends Equatable {
       subtitle: json['subtitle'] as String?,
       price: json['price'] as int?,
       description: json['description'] as String?,
-      requirement: json['requirement'] as List<String>?,
-      learnWhat: json['learnWhat'] as List<String>?,
+      requirement: List<String>.from(json['requirement']),
+      learnWhat: List<String>.from(json['learnWhat']),
       soldNumber: json['soldNumber'] as int?,
       ratedNumber: json['ratedNumber'] as int?,
       videoNumber: json['videoNumber'] as int?,
       totalHours: json['totalHours'] as double?,
-      formalityPoint: json['formalityPoint'] as int?,
-      contentPoint: json['contentPoint'] as int?,
-      presentationPoint: json['presentationPoint'] as int?,
+      formalityPoint: double.parse(json['formalityPoint'].toString()),
+      contentPoint: double.parse(json['contentPoint'].toString()),
+      presentationPoint: double.parse(json['presentationPoint'].toString()),
       imageUrl: json['imageUrl'] as String?,
       promoVidUrl: json['promoVidUrl'] as String?,
       status: json['status'] as String?,
@@ -75,7 +79,9 @@ class CourseInfo extends Equatable {
       updatedAt: json['updatedAt'] as String?,
       instructorId: json['instructorId'] as String?,
       typeUploadVideoLesson: json['typeUploadVideoLesson'] as int?,
-      categoryIds: json['categoryIds'] as List<String>?,
+      categoryIds: List<String>.from(json.putIfAbsent('categoryIds', () => [])),
+      instructorUserId: json['instructor.user.id'] as String?,
+      instructorUserName: json['instructor.user.name'] as String?,
     );
   }
 
@@ -104,6 +110,8 @@ class CourseInfo extends Equatable {
       'instructorId': instructorId,
       'typeUploadVideoLesson': typeUploadVideoLesson,
       'categoryIds': categoryIds,
+      'instructor.user.id': instructorUserId,
+      'instructor.user.name': instructorUserName,
     };
   }
 
@@ -119,9 +127,9 @@ class CourseInfo extends Equatable {
     int? ratedNumber,
     int? videoNumber,
     double? totalHours,
-    int? formalityPoint,
-    int? contentPoint,
-    int? presentationPoint,
+    double? formalityPoint,
+    double? contentPoint,
+    double? presentationPoint,
     String? imageUrl,
     String? promoVidUrl,
     String? status,
@@ -131,6 +139,8 @@ class CourseInfo extends Equatable {
     String? instructorId,
     int? typeUploadVideoLesson,
     List<String>? categoryIds,
+    String? instructorUserId,
+    String? instructorUserName,
   }) {
     return CourseInfo(
       id: id ?? this.id,
@@ -157,6 +167,8 @@ class CourseInfo extends Equatable {
       typeUploadVideoLesson:
           typeUploadVideoLesson ?? this.typeUploadVideoLesson,
       categoryIds: categoryIds ?? this.categoryIds,
+      instructorUserId: instructorUserId ?? this.instructorUserId,
+      instructorUserName: instructorUserName ?? this.instructorUserName,
     );
   }
 
@@ -189,6 +201,8 @@ class CourseInfo extends Equatable {
       instructorId,
       typeUploadVideoLesson,
       categoryIds,
+      instructorUserId,
+      instructorUserName,
     ];
   }
 }

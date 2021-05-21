@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/course_info.dart';
+import 'package:flutter_app/views/utils/converter.dart';
 import 'package:flutter_app/views/utils/spacer.dart';
 import 'package:flutter_app/views/components/rating_bar.dart';
 
-class CourseListTile extends StatelessWidget {
-  final ImageProvider<Object> image;
-  final String title;
-  final String author;
-  final String level;
-  final String date;
-  final String time;
-  final double rating;
+class CourseTile extends StatelessWidget {
+  final CourseInfo info;
 
-  const CourseListTile(
-      {Key? key,
-      required this.image,
-      required this.title,
-      required this.author,
-      required this.level,
-      required this.date,
-      required this.time,
-      required this.rating})
-      : super(key: key);
+  const CourseTile({
+    Key? key,
+    required this.info,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -28,7 +18,7 @@ class CourseListTile extends StatelessWidget {
         width: 64.0,
         height: 48.0,
         child: Image(
-          image: image,
+          image: NetworkImage(info.imageUrl.toString()),
           fit: BoxFit.fill,
         ),
       ),
@@ -42,27 +32,22 @@ class CourseListTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            title,
+            info.title.toString(),
             style: Theme.of(context).textTheme.bodyText2,
           ),
           Text(
-            author,
+            info.instructorUserName.toString(),
             style: Theme.of(context).textTheme.caption,
           ),
           Row(
             children: [
               Text(
-                level,
+                OLConverter.date(info.updatedAt, true),
                 style: Theme.of(context).textTheme.caption,
               ),
               TextSeparator(distance: 4.0),
               Text(
-                date,
-                style: Theme.of(context).textTheme.caption,
-              ),
-              TextSeparator(distance: 4.0),
-              Text(
-                time,
+                OLConverter.time(info.totalHours),
                 style: Theme.of(context).textTheme.caption,
               ),
             ],
@@ -71,7 +56,10 @@ class CourseListTile extends StatelessWidget {
             children: [
               RatingBar(
                 stars: 5,
-                rate: rating,
+                rate: (info.presentationPoint! +
+                        info.contentPoint! +
+                        info.formalityPoint!) /
+                    3,
                 reactable: false,
                 size: 18.0,
                 color: Colors.yellow[800],

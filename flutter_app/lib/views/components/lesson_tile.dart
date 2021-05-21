@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/models.dart';
@@ -92,7 +90,7 @@ class _LessonTileState extends State<LessonTile> {
           Duration(seconds: (widget.lesson.hours! * 3600).toInt())
               .toString()
               .split('.')[0],
-          style: Theme.of(context).textTheme.bodyText1,
+          style: Theme.of(context).textTheme.caption,
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,

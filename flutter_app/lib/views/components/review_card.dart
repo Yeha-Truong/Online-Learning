@@ -93,7 +93,7 @@ class _ReviewCardState extends State<ReviewCard> {
                       ),
                       VerticalSpacer(distance: 2.0),
                       AutoSizeText(
-                        OLConverter.date(widget.date),
+                        OLConverter.date(widget.date, false),
                         style: Theme.of(context).textTheme.caption,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

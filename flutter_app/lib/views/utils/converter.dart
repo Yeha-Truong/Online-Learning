@@ -1,7 +1,7 @@
-import 'package:intl/intl.dart';
-
 class OLConverter {
-  static date(date) {
+  static date(date, bool? dateOnly) {
+    if (dateOnly!)
+      return DateTime.parse(date).toLocal().toString().split(' ')[0];
     return DateTime.parse(date).toLocal().toString().split('.')[0];
     //return DateFormat(format).format(DateTime.parse(date));
   }

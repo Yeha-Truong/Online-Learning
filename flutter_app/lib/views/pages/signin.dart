@@ -1,15 +1,60 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/networking/blocs/blocs.dart';
+import 'package:flutter_app/networking/response.dart';
+import 'package:flutter_app/views/utils/messages.dart';
 import '../utils/spacer.dart';
 
-class SigninPage extends StatelessWidget {
+class SigninPage extends StatefulWidget {
+  @override
+  _SigninPageState createState() => _SigninPageState();
+}
+
+class _SigninPageState extends State<SigninPage> {
+  bool _obscure = true;
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   void _cancel(context) {
     Navigator.pop(context);
   }
 
-  void _showPassword() {}
+  void _showPassword() {
+    setState(() {
+      _obscure = !_obscure;
+    });
+  }
+
   void _signin(context) {
-    Navigator.pushNamed(context, '/centre');
+    final FormState? state = _formKey.currentState;
+    if (state!.validate()) {
+      UserBloc bloc = UserBloc();
+      bloc.login(_email.text, _password.text);
+      bloc.userStream.listen((event) {
+        switch (event.status) {
+          case Status.LOADING:
+            OLMessage.showLinearDialog(context);
+            break;
+          case Status.COMPLETED:
+            Navigator.of(context, rootNavigator: true).pop();
+            Navigator.pushNamed(context, '/');
+            break;
+          case Status.ERROR:
+            Navigator.of(context, rootNavigator: true).pop();
+            OLMessage.showStatusDialog(
+              context,
+              DialogType.INFO,
+              event.message.toString(),
+              () => {},
+            );
+            break;
+          default:
+            break;
+        }
+      });
+    }
   }
 
   void _help(context) {
@@ -17,6 +62,7 @@ class SigninPage extends StatelessWidget {
   }
 
   void _sso() {}
+
   void _subscribe(context) {
     Navigator.pushNamed(context, '/signup');
   }
@@ -47,63 +93,106 @@ class SigninPage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.always,
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Email or username'),
+                    Container(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Email'),
+                          ),
+                          VerticalSpacer(distance: 8.0),
+                          TextFormField(
+                            controller: _email,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              fillColor: Theme.of(context).primaryColor,
+                              filled: true,
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 0.0,
+                              ),
+                            ),
+                            validator: (value) =>
+                                value!.isEmpty ? 'Name cannot be empty!' : null,
+                          ),
+                        ],
+                      ),
                     ),
-                    VerticalSpacer(distance: 8.0),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 0.0,
+                    VerticalSpacer(distance: 16.0),
+                    Container(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text('Password'),
+                          ),
+                          VerticalSpacer(distance: 8.0),
+                          Stack(
+                            alignment: Alignment.topLeft,
+                            children: [
+                              TextFormField(
+                                controller: _password,
+                                textInputAction: TextInputAction.done,
+                                obscureText: _obscure,
+                                decoration: InputDecoration(
+                                  fillColor: Theme.of(context).primaryColor,
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                    vertical: 0.0,
+                                  ),
+                                  prefixIcon: GestureDetector(
+                                    dragStartBehavior: DragStartBehavior.down,
+                                    onTap: () => {},
+                                    child: Icon(
+                                      !_obscure
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                    ),
+                                  ),
+                                ),
+                                validator: (value) => value!.isEmpty
+                                    ? 'Password cannot be empty!'
+                                    : null,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: GestureDetector(
+                                  dragStartBehavior: DragStartBehavior.down,
+                                  onTap: _showPassword,
+                                  child: Icon(
+                                    !_obscure
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    VerticalSpacer(distance: 16.0),
+                    Container(
+                      child: FractionallySizedBox(
+                        widthFactor: 1.0,
+                        child: ElevatedButton(
+                          autofocus: true,
+                          child: Text('Sign in'),
+                          onPressed: () => _signin(context),
                         ),
                       ),
                     ),
                   ],
-                ),
-              ),
-              VerticalSpacer(distance: 16.0),
-              Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Password'),
-                    ),
-                    VerticalSpacer(distance: 8.0),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 0.0,
-                        ),
-                        prefixIcon: GestureDetector(
-                          dragStartBehavior: DragStartBehavior.down,
-                          onTap: _showPassword,
-                          child: Icon(Icons.visibility_off),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              VerticalSpacer(distance: 16.0),
-              Container(
-                child: FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: ElevatedButton(
-                    autofocus: true,
-                    child: Text('Sign in'),
-                    onPressed: () => _signin(context),
-                  ),
                 ),
               ),
               Container(
@@ -128,7 +217,7 @@ class SigninPage extends StatelessWidget {
                 child: FractionallySizedBox(
                   widthFactor: 1.0,
                   child: OutlinedButton(
-                    child: Text('Subscribe to PluralSight'),
+                    child: Text('Subscribe to OnlineLearning'),
                     onPressed: () => _subscribe(context),
                   ),
                 ),
@@ -137,6 +226,7 @@ class SigninPage extends StatelessWidget {
           ),
         ),
       ),
+      resizeToAvoidBottomInset: false,
     );
   }
 }

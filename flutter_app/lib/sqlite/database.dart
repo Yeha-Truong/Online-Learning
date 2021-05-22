@@ -32,7 +32,7 @@ class OLDatabase {
 
   void _onCreate(Database db, int version) {
     db.execute(
-      "CREATE TABLE user(id INTEGER PRIMARY KEY, email TEXT, userName TEXT, phoneNumberConfirmed BOOLEAN, birthDate TEXT, createdDate TEXT, addressLine BLOB, lockoutEnabled BOOLEAN, lockoutEnd TEXT, userRoles BLOB,active BOOLEAN)",
+      "CREATE TABLE user(id TEXT PRIMARY KEY, email TEXT, userName TEXT, phoneNumberConfirmed BOOLEAN, birthDate TEXT, createdDate TEXT, addressLine BLOB, lockoutEnabled BOOLEAN, lockoutEnd TEXT, userRoles BLOB,active BOOLEAN)",
     );
   }
 

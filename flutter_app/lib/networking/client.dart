@@ -88,21 +88,21 @@ class APIClient {
   }
 
   dynamic _returnResponse(http.Response response) async {
+    var responseJson = jsonDecode(response.body.toString());
     switch (response.statusCode) {
       case 200:
-        var responseJson = jsonDecode(response.body.toString());
         return responseJson;
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestException(responseJson['message']);
       case 401:
-        throw TokenExpiredException(response.body.toString());
-      case 403:
-        await _authentication.refresh();
-        return null;
+        throw TokenExpiredException(responseJson['message']);
       case 500:
       default:
-        throw NetworkException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+        if (responseJson['message'] != null)
+          throw BadRequestException(responseJson['message']);
+        else
+          BadRequestException(
+              'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
     }
   }
 }

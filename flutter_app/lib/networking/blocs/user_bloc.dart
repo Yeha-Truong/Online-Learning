@@ -11,28 +11,30 @@ class UserBloc {
   StreamSink<Response<User>> get userSink =>
       _controller.sink as StreamSink<Response<User>>;
   Stream<Response<User>> get userStream =>
-      _controller.stream.cast<Response<User>>();
+      _controller.stream as Stream<Response<User>>;
   UserBloc() {
     _controller = StreamController<Response<User>>();
     _repository = UserRepository();
   }
 
-  login(String email, String password) async {
-    userSink.add(Response.loading('Sign in...'));
+  register(String email, String name, String phone, String password) async {
+    userSink.add(Response.loading('Sign up...'));
     try {
-      await _repository.login(email, password);
+      await _repository.register(email, name, phone, password);
       userSink.add(Response.completed(null));
+      dispose();
     } catch (e) {
       userSink.add(Response.error(e.toString()));
       print(e);
     }
   }
 
-  getDetails() async {
-    userSink.add(Response.loading('Loading details...'));
+  login(String email, String password) async {
+    userSink.add(Response.loading('Sign up...'));
     try {
-      User user = await _repository.getDetail();
+      User user = await _repository.signin(email, password);
       userSink.add(Response.completed(user));
+      dispose();
     } catch (e) {
       userSink.add(Response.error(e.toString()));
       print(e);

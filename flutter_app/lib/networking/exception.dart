@@ -13,7 +13,7 @@ class NetworkException extends AppException {
 }
 
 class BadRequestException extends AppException {
-  BadRequestException([message]) : super(message, "Invalid Request: ");
+  BadRequestException([message]) : super(message, "Bad Request: ");
 }
 
 class UnauthorisedException extends AppException {

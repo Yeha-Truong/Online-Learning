@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_app/models/models.dart';
+import 'package:flutter_app/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class WelcomePage extends StatelessWidget {
   void _signin(context) {
@@ -10,11 +14,18 @@ class WelcomePage extends StatelessWidget {
   }
 
   void _trail(context) {
-    Navigator.pushNamed(context, '/centre');
+    Provider.of<UserProvider>(context, listen: false)
+        .saveUser(new User())
+        .then((value) => SchedulerBinding.instance!.addPostFrameCallback((_) {
+              Navigator.pushNamed(context, '/');
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserProvider>(context, listen: false).loadUser().then((value) {
+      if (value) Navigator.pushReplacementNamed(context, '/');
+    });
     return Scaffold(
       body: Center(
         child: Container(
@@ -38,7 +49,7 @@ class WelcomePage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
                     child: Text(
-                      'PLURALSIGHT',
+                      'OnlineLearning',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
@@ -69,7 +80,7 @@ class WelcomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: Text('Subscribe to Pluralsight'),
+                        child: Text('Subscribe to OnlineLearning'),
                         onPressed: () => _subscribe(context),
                       ),
                     ),

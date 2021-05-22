@@ -3,9 +3,11 @@ import 'package:flutter_app/models/models.dart';
 import 'package:flutter_app/networking/blocs/courses_bloc.dart';
 import 'package:flutter_app/networking/repository/courses_repository.dart';
 import 'package:flutter_app/networking/response.dart';
+import 'package:flutter_app/provider/user_provider.dart';
 import 'package:flutter_app/views/components/author_card.dart';
 import 'package:flutter_app/views/components/course_card.dart';
 import 'package:flutter_app/views/utils/spacer.dart';
+import 'package:provider/provider.dart';
 
 class HomeFragment extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _HomeFragmentState extends State<HomeFragment>
   late CoursesBloc _new;
   late CoursesBloc _rate;
   late CoursesBloc _sell;
+  late UserProvider _userProvider;
 
   @override
   void initState() {
@@ -27,6 +30,12 @@ class _HomeFragmentState extends State<HomeFragment>
     _new.topCourses(CoursesType.NEW, 10, 1);
     _rate.topCourses(CoursesType.RATE, 10, 1);
     _sell.topCourses(CoursesType.SELL, 10, 1);
+  }
+
+  @override
+  didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context, listen: true);
+    super.didChangeDependencies();
   }
 
   @override
@@ -371,7 +380,9 @@ class _HomeFragmentState extends State<HomeFragment>
             child: CircleAvatar(
               backgroundColor: Colors.transparent,
               child: ClipRRect(
-                child: Image(image: AssetImage('assets/default/takodachi.png')),
+                child: _userProvider.user.avatar != null
+                    ? Image.network(_userProvider.user.avatar.toString())
+                    : Image(image: AssetImage('assets/default/takodachi.png')),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               radius: 16.0,

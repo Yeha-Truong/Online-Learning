@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/utils/spacer.dart';
 
 class OLMessage {
   static showLinearDialog(context) {

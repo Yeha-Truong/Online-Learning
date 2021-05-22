@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';

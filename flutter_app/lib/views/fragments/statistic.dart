@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/provider/user_provider.dart';
 import 'package:flutter_app/views/components/category_tag.dart';
 import 'package:flutter_app/views/utils/spacer.dart';
+import 'package:provider/provider.dart';
 
 class StatisticFragment extends StatefulWidget {
   @override
@@ -8,7 +10,12 @@ class StatisticFragment extends StatefulWidget {
 }
 
 class _StatisticFragmentState extends State<StatisticFragment> {
-  List<String> _interests = ['Javascript', 'Python', 'React'];
+  late UserProvider _userProvider;
+  @override
+  didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context, listen: true);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +54,23 @@ class _StatisticFragmentState extends State<StatisticFragment> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/default/takodachi.png'),
+                      backgroundColor: Colors.transparent,
+                      child: ClipRRect(
+                        child: _userProvider.user.avatar != null
+                            ? Image.network(
+                                _userProvider.user.avatar.toString())
+                            : Image(
+                                image:
+                                    AssetImage('assets/default/takodachi.png')),
+                        borderRadius: BorderRadius.circular(80.0),
+                      ),
                       radius: 80.0,
                     ),
                     VerticalSpacer(distance: 16.0),
                     Text(
-                      'Hai Pham',
+                      _userProvider.user.name != null
+                          ? _userProvider.user.name.toString()
+                          : "Guest",
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ],
@@ -61,75 +78,68 @@ class _StatisticFragmentState extends State<StatisticFragment> {
               ),
             ),
             VerticalSpacer(distance: 32.0),
-            Container(
-              margin: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Interests',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  VerticalSpacer(distance: 8.0),
-                  Container(
-                    height: 36.0,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => Container(
-                        child: CategoryTag(title: _interests[index]),
-                        margin: EdgeInsets.all(2.0),
-                      ),
-                      separatorBuilder: (context, index) => Divider(),
-                      itemCount: _interests.length,
+            if (_userProvider.user.id != null)
+              Container(
+                margin: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Interests',
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
-                  ),
-                  VerticalSpacer(distance: 24.0),
-                  Text(
-                    'Activity insights (last 30 days)',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                  VerticalSpacer(distance: 16.0),
-                  Text(
-                    'TOTAL ACTIVE DAYS',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  VerticalSpacer(distance: 8.0),
-                  Row(
-                    children: [
-                      Text(
-                        '4',
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                      Text(
-                        '1 day streak',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
-                  ),
-                  VerticalSpacer(distance: 16.0),
-                  Text(
-                    'MOST ACTIVE TIME OF DAY',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  VerticalSpacer(distance: 8.0),
-                  Text(
-                    '21:00',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  VerticalSpacer(distance: 16.0),
-                  Text(
-                    'MOST VIEWED SUBJECT',
-                    style: Theme.of(context).textTheme.subtitle2,
-                  ),
-                  VerticalSpacer(distance: 8.0),
-                  Text(
-                    'Managerial Skills',
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ],
+                    VerticalSpacer(distance: 8.0),
+                    _userProvider.user.favoriteCategories!.isNotEmpty
+                        ? Container(
+                            height: 36.0,
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) => Container(
+                                child: CategoryTag(
+                                    title: _userProvider
+                                        .user.favoriteCategories![index]),
+                                margin: EdgeInsets.all(2.0),
+                              ),
+                              separatorBuilder: (context, index) => Divider(),
+                              itemCount:
+                                  _userProvider.user.favoriteCategories!.length,
+                            ),
+                          )
+                        : Center(
+                            child: Text(
+                              'Empty',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                    VerticalSpacer(distance: 24.0),
+                    Text(
+                      'User information',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    VerticalSpacer(distance: 16.0),
+                    Text(
+                      'PHONE NUMBER',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    VerticalSpacer(distance: 8.0),
+                    Text(
+                      _userProvider.user.phone.toString(),
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                    VerticalSpacer(distance: 16.0),
+                    Text(
+                      'ACCOUNT TYPE',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    VerticalSpacer(distance: 8.0),
+                    Text(
+                      _userProvider.user.type.toString(),
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

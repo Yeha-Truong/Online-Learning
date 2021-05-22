@@ -3,7 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/networking/blocs/blocs.dart';
 import 'package:flutter_app/networking/response.dart';
+import 'package:flutter_app/provider/user_provider.dart';
 import 'package:flutter_app/views/utils/messages.dart';
+import 'package:provider/provider.dart';
 import '../utils/spacer.dart';
 
 class SigninPage extends StatefulWidget {
@@ -32,13 +34,15 @@ class _SigninPageState extends State<SigninPage> {
     if (state!.validate()) {
       UserBloc bloc = UserBloc();
       bloc.login(_email.text, _password.text);
-      bloc.userStream.listen((event) {
+      bloc.userStream.listen((event) async {
         switch (event.status) {
           case Status.LOADING:
             OLMessage.showLinearDialog(context);
             break;
           case Status.COMPLETED:
             Navigator.of(context, rootNavigator: true).pop();
+            await Provider.of<UserProvider>(context, listen: false)
+                .saveUser(event.data);
             Navigator.pushNamed(context, '/');
             break;
           case Status.ERROR:

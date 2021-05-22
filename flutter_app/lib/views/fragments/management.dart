@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/provider/user_provider.dart';
 import 'package:flutter_app/views/utils/spacer.dart';
+import 'package:provider/provider.dart';
 
 class ManagementFragment extends StatefulWidget {
   @override
@@ -7,20 +9,18 @@ class ManagementFragment extends StatefulWidget {
 }
 
 class _ManagementFragmentState extends State<ManagementFragment> {
-  bool _stream = false;
+  late UserProvider _userProvider;
 
-  bool _download = true;
-
-  void _onSwitchStream(value) {
-    setState(() {
-      _stream = value;
-    });
+  Future<void> _signout() async {
+    await _userProvider.deactiveUser();
+    Navigator.of(context, rootNavigator: true)
+        .pushNamedAndRemoveUntil('/welcome', (route) => false);
   }
 
-  void _onSwitchDownload(value) {
-    setState(() {
-      _download = value;
-    });
+  @override
+  didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context, listen: true);
+    super.didChangeDependencies();
   }
 
   @override
@@ -54,26 +54,15 @@ class _ManagementFragmentState extends State<ManagementFragment> {
             children: ListTile.divideTiles(
               context: context,
               tiles: [
-                ListTile(
-                  title: Text(
-                    'Account',
-                    style: Theme.of(context).textTheme.bodyText1,
+                if (_userProvider.user.id != null)
+                  ListTile(
+                    title: Text(
+                      'Account',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                    onTap: () => {},
                   ),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  title: Text(
-                    'Subscription',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  subtitle: Text(
-                    'Invidual (Expires: May 1, 2020)',
-                    style: Theme.of(context).textTheme.overline,
-                  ),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: () => {},
-                ),
                 ListTile(
                   title: Text(
                     'Theme',
@@ -92,30 +81,6 @@ class _ManagementFragmentState extends State<ManagementFragment> {
                     ],
                   ),
                   onTap: () => Navigator.pushNamed(context, '/theme'),
-                ),
-                ListTile(
-                  title: Text(
-                    'Require Wi-Fi for streaming',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  trailing: Switch(
-                    value: _stream,
-                    activeColor: Colors.lightBlue,
-                    onChanged: (value) => _onSwitchStream(value),
-                  ),
-                  onTap: () => {},
-                ),
-                ListTile(
-                  title: Text(
-                    'Require Wi-Fi for downloading',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  trailing: Switch(
-                    value: _download,
-                    activeColor: Colors.lightBlue,
-                    onChanged: (value) => _onSwitchDownload(value),
-                  ),
-                  onTap: () => {},
                 ),
                 ListTile(
                   title: Text(
@@ -139,18 +104,20 @@ class _ManagementFragmentState extends State<ManagementFragment> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   trailing: Text(
-                    '2.76.2479',
+                    '1.0',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   onTap: () => {},
                 ),
                 VerticalSpacer(distance: 32.0),
-                OutlinedButton(
-                  onPressed: () => Navigator.of(context, rootNavigator: true)
-                      .pushNamedAndRemoveUntil('/welcome', (route) => false),
-                  child: Text(
-                    'Sign out',
-                    style: Theme.of(context).textTheme.bodyText1,
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 12.0),
+                  child: OutlinedButton(
+                    onPressed: _signout,
+                    child: Text(
+                      _userProvider.user.id != null ? 'Sign out' : 'Sign in',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
                   ),
                 ),
               ],

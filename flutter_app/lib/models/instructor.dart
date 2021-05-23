@@ -51,7 +51,7 @@ class Instructor extends Equatable {
       phone: json['phone'] as String?,
       major: json['major'] as String?,
       intro: json['intro'] as String?,
-      skills: List<String>.from(json['skills']),
+      skills: List<String>.from(json.putIfAbsent('skills', () => null)),
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
       totalCourse: json['totalCourse'] as int?,

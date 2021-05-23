@@ -1,39 +1,58 @@
-import 'package:flutter_app/models/models.dart';
+import 'package:flutter_app/networking/authentication.dart';
+
 import '../client.dart';
 
-class CoursesRepository {
+class SearchRepository {
   APIClient _client = APIClient();
 
-  Future<List<CourseInfo>> topCourses(
-      CoursesType type, int limit, int page) async {
-    List<CourseInfo> courses = [];
-    String path;
-    switch (type) {
-      case CoursesType.NEW:
-        path = '/course/top-new';
-        break;
-      case CoursesType.RATE:
-        path = '/course/top-rate';
-        break;
-      case CoursesType.SELL:
-        path = '/course/top-sell';
-        break;
-      default:
-        path = '/course/top-new';
-        break;
-    }
-    var response = ((await _client.post(
-            path,
-            {
-              'limit': limit,
-              'page': page,
+  Future<Map<String, dynamic>> history() async {
+    var response =
+        await _client.get('/course/search-history', authorization: true);
+    return response;
+  }
+
+  Future<Map<String, dynamic>> delete(String id) async {
+    var response = await _client.get('/course/delete-search-history/${id}',
+        authorization: true);
+    return response['payload'];
+  }
+
+  Future<Map<String, dynamic>> courses(
+      String keyword, int offset, List<String> category) async {
+    var token = await Authentication().token;
+    var response = await _client.post(
+        '/course/searchV2',
+        {
+          'token': token,
+          'keyword': keyword,
+          'limit': 10,
+          'offset': offset,
+          'opt': {
+            'sort': {
+              'attribute': 'price',
+              'rule': 'ASC',
             },
-            authorization: false))['payload'] as List<dynamic>?)
-        ?.map((e) => CourseInfo.fromJson(e as Map<String, dynamic>))
-        .toList();
-    courses = response!;
-    return courses;
+            'category': category,
+          }
+        },
+        authorization: false);
+    return response['payload'];
+  }
+
+  Future<Map<String, dynamic>> bar(String keyword, int offset) async {
+    var response = await _client.post(
+        '/course/search-bar',
+        {
+          'keyword': keyword,
+          'offset': offset,
+          'opt': {
+            'sort': {
+              'attribute': 'price',
+              'rule': 'ASC',
+            },
+          }
+        },
+        authorization: false);
+    return response['payload'];
   }
 }
-
-enum CoursesType { NEW, RATE, SELL }

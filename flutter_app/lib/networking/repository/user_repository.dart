@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter_app/models/user.dart';
 import 'package:flutter_app/networking/authentication.dart';
 import '../client.dart';
@@ -75,5 +78,21 @@ class UserRepository {
         },
         authorization: false);
     return;
+  }
+
+  Future<void> uploadAvatar(File file) async {
+    // ignore: unused_local_variable
+    var response = await _client.multipart(
+        '/user/upload-avatar', 'POST', 'avatar', file,
+        authorization: true);
+    return;
+  }
+
+  Future<User> update(String name, String phone, String avatar) async {
+    var response = await _client.put('/user/update-profile',
+        {'name': name, 'phone': phone, 'avatar': avatar},
+        authorization: true);
+    User user = User.fromJson(response['payload']);
+    return user;
   }
 }

@@ -1,13 +1,12 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/networking/blocs/blocs.dart';
 import 'package:flutter_app/networking/response.dart';
 import 'package:flutter_app/provider/user_provider.dart';
 import 'package:flutter_app/views/utils/messages.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../utils/spacer.dart';
 
@@ -17,42 +16,70 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  bool _obscure = true;
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
+  late UserProvider _userProvider;
+  File? _image = null;
+  TextEditingController _name = TextEditingController();
+  TextEditingController _phone = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void _cancel(context) {
-    Navigator.pop(context);
-  }
-
-  void _showPassword() {
-    setState(() {
-      _obscure = !_obscure;
+  Future<void> _upload(context) async {
+    // ignore: invalid_use_of_visible_for_testing_member
+    var image = await ImagePicker.platform.pickImage(
+      source: ImageSource.gallery,
+    );
+    UserBloc bloc = UserBloc();
+    bloc.uploadAvatar(File(image!.path));
+    bloc.stream.listen((event) {
+      switch (event.status) {
+        case Status.LOADING:
+          OLMessage.showLinearDialog(context);
+          break;
+        case Status.COMPLETED:
+          Navigator.of(context, rootNavigator: true).pop();
+          break;
+        case Status.ERROR:
+          Navigator.of(context, rootNavigator: true).pop();
+          OLMessage.showStatusDialog(
+            context,
+            DialogType.ERROR,
+            event.message.toString(),
+            () => {},
+          );
+          break;
+        default:
+          break;
+      }
     });
   }
 
-  void _signin(context) {
+  void _update(context) {
     final FormState? state = _formKey.currentState;
     if (state!.validate()) {
       UserBloc bloc = UserBloc();
-      bloc.signin(_email.text, _password.text);
+      bloc.update(
+          _name.text, _phone.text, _userProvider.user.avatar.toString());
       bloc.stream.listen((event) async {
         switch (event.status) {
           case Status.LOADING:
             OLMessage.showLinearDialog(context);
             break;
           case Status.COMPLETED:
-            Navigator.of(context, rootNavigator: true).pop();
+            _userProvider.user = event.data;
             await Provider.of<UserProvider>(context, listen: false)
                 .saveUser(event.data, UserType.System);
-            Navigator.pushNamed(context, '/');
+            Navigator.of(context, rootNavigator: true).pop();
+            OLMessage.showStatusDialog(
+              context,
+              DialogType.SUCCES,
+              'Update successfully',
+              () => {},
+            );
             break;
           case Status.ERROR:
             Navigator.of(context, rootNavigator: true).pop();
             OLMessage.showStatusDialog(
               context,
-              DialogType.INFO,
+              DialogType.ERROR,
               event.message.toString(),
               () => {},
             );
@@ -64,73 +91,37 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _help(context) {
-    Navigator.pushNamed(context, '/support');
-  }
-
-  Future<void> _google() async {
-    GoogleSignIn google = GoogleSignIn(
-      scopes: <String>[
-        'email',
-      ],
-    );
-    await google.signIn().then((value) {
-      if (value != null) {
-        log(value.toString());
-        UserBloc bloc = UserBloc();
-        bloc.google(value.email, value.id);
-        bloc.stream.listen((event) async {
-          switch (event.status) {
-            case Status.LOADING:
-              OLMessage.showLinearDialog(context);
-              break;
-            case Status.COMPLETED:
-              Navigator.of(context, rootNavigator: true).pop();
-              await Provider.of<UserProvider>(context, listen: false)
-                  .saveUser(event.data, UserType.Google);
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/', (route) => false);
-              break;
-            case Status.ERROR:
-              Navigator.of(context, rootNavigator: true).pop();
-              OLMessage.showStatusDialog(
-                context,
-                DialogType.INFO,
-                event.message.toString(),
-                () => {},
-              );
-              break;
-            default:
-              break;
-          }
-        });
-      }
-    });
-  }
-
-  void _subscribe(context) {
-    Navigator.pushNamed(context, '/signup');
+  @override
+  didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context, listen: true);
+    _name.text = _userProvider.user.name != null
+        ? _userProvider.user.name.toString()
+        : '';
+    _phone.text = _userProvider.user.phone != null
+        ? _userProvider.user.phone.toString()
+        : '';
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign in'),
+        title: Text('Profile'),
         centerTitle: true,
         leading: Align(
           alignment: Alignment.centerLeft,
           child: TextButton(
-            onPressed: () => _cancel(context),
+            onPressed: () => Navigator.pop(context),
             child: Text(
-              'Cancel',
+              'Back',
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
           ),
         ),
-        leadingWidth: 200.0,
+        leadingWidth: 100.0,
       ),
       body: Center(
         child: Container(
@@ -138,6 +129,29 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              _image != null
+                  ? Image.file(_image!)
+                  : CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      child: ClipRRect(
+                        child: _userProvider.user.avatar != null
+                            ? Image.network(
+                                _userProvider.user.avatar.toString())
+                            : Image(
+                                image:
+                                    AssetImage('assets/default/takodachi.png')),
+                        borderRadius: BorderRadius.circular(80.0),
+                      ),
+                      radius: 80.0,
+                    ),
+              ElevatedButton(
+                onPressed: () => _upload(context),
+                child: Text(
+                  'Change image',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ),
+              VerticalSpacer(distance: 16.0),
               Form(
                 key: _formKey,
                 autovalidateMode: AutovalidateMode.always,
@@ -149,15 +163,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Email'),
+                            child: Text('Name'),
                           ),
                           VerticalSpacer(distance: 8.0),
                           TextFormField(
-                            controller: _email,
-                            textInputAction: TextInputAction.next,
+                            controller: _name,
+                            textInputAction: TextInputAction.done,
                             decoration: InputDecoration(
                               fillColor: Theme.of(context).primaryColor,
                               filled: true,
+                              hintText: _userProvider.user.name != null
+                                  ? _userProvider.user.name
+                                  : '',
                               border: OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
                                 horizontal: 16.0,
@@ -177,51 +194,30 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
-                            child: Text('Password'),
+                            child: Text('Phone'),
                           ),
                           VerticalSpacer(distance: 8.0),
-                          Stack(
-                            alignment: Alignment.topLeft,
-                            children: [
-                              TextFormField(
-                                controller: _password,
-                                textInputAction: TextInputAction.done,
-                                obscureText: _obscure,
-                                decoration: InputDecoration(
-                                  fillColor: Theme.of(context).primaryColor,
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                    vertical: 0.0,
-                                  ),
-                                  prefixIcon: GestureDetector(
-                                    dragStartBehavior: DragStartBehavior.down,
-                                    onTap: () => {},
-                                    child: Icon(
-                                      !_obscure
-                                          ? Icons.visibility_off
-                                          : Icons.visibility,
-                                    ),
-                                  ),
-                                ),
-                                validator: (value) => value!.isEmpty
-                                    ? 'Password cannot be empty!'
+                          TextFormField(
+                            controller: _phone,
+                            textInputAction: TextInputAction.done,
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              fillColor: Theme.of(context).primaryColor,
+                              filled: true,
+                              hintText: _userProvider.user.phone != null
+                                  ? _userProvider.user.phone
+                                  : '',
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 0.0,
+                              ),
+                            ),
+                            validator: (value) =>
+                                !RegExp(r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+                                        .hasMatch(value.toString())
+                                    ? 'Invalid phone number'
                                     : null,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(12.0),
-                                child: GestureDetector(
-                                  dragStartBehavior: DragStartBehavior.down,
-                                  onTap: _showPassword,
-                                  child: Icon(
-                                    !_obscure
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
@@ -232,39 +228,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         widthFactor: 1.0,
                         child: ElevatedButton(
                           autofocus: true,
-                          child: Text('Sign in'),
-                          onPressed: () => _signin(context),
+                          child: Text('Update'),
+                          onPressed: () => _update(context),
                         ),
                       ),
                     ),
                   ],
-                ),
-              ),
-              Container(
-                child: FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: TextButton(
-                    child: Text('Need help?'),
-                    onPressed: () => _help(context),
-                  ),
-                ),
-              ),
-              Container(
-                child: FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: OutlinedButton(
-                    child: Text('Sign in with Google'),
-                    onPressed: _google,
-                  ),
-                ),
-              ),
-              Container(
-                child: FractionallySizedBox(
-                  widthFactor: 1.0,
-                  child: OutlinedButton(
-                    child: Text('Subscribe to OnLearn'),
-                    onPressed: () => _subscribe(context),
-                  ),
                 ),
               ),
             ],

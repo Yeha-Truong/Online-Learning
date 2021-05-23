@@ -17,14 +17,16 @@ class WelcomePage extends StatelessWidget {
     Provider.of<UserProvider>(context, listen: false)
         .saveUser(new User(), UserType.Guest)
         .then((value) => SchedulerBinding.instance!.addPostFrameCallback((_) {
-              Navigator.pushNamed(context, '/');
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/', (route) => false);
             }));
   }
 
   @override
   Widget build(BuildContext context) {
     Provider.of<UserProvider>(context, listen: false).loadUser().then((value) {
-      if (value) Navigator.pushReplacementNamed(context, '/');
+      if (value)
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     });
     return Scaffold(
       body: Center(

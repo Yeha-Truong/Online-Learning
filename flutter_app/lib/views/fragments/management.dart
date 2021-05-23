@@ -54,14 +54,14 @@ class _ManagementFragmentState extends State<ManagementFragment> {
             children: ListTile.divideTiles(
               context: context,
               tiles: [
-                if (_userProvider.user.id != null)
+                if (_userProvider.type != UserType.Guest)
                   ListTile(
                     title: Text(
                       'Account',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     trailing: Icon(Icons.keyboard_arrow_right),
-                    onTap: () => {},
+                    onTap: () => Navigator.pushNamed(context, '/profile'),
                   ),
                 if (_userProvider.type == UserType.System)
                   ListTile(

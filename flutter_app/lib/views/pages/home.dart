@@ -5,6 +5,7 @@ import 'package:flutter_app/views/fragments/management.dart';
 import 'package:flutter_app/views/fragments/statistic.dart';
 import 'package:flutter_app/views/fragments/theme.dart';
 import 'package:flutter_app/views/pages/change_password.dart';
+import 'package:flutter_app/views/pages/profile.dart';
 
 class Routes {
   static const String root = '/';
@@ -13,6 +14,7 @@ class Routes {
   static const String theme = '/theme';
   static const String statistic = '/statistic';
   static const String change = '/change';
+  static const String profile = '/profile';
 }
 
 class HomePage extends StatefulWidget {
@@ -49,6 +51,9 @@ class _HomePageState extends State<HomePage> {
               break;
             case Routes.change:
               builder = (_) => ChangePasswordPage();
+              break;
+            case Routes.profile:
+              builder = (_) => ProfilePage();
               break;
             default:
               throw Exception('Invalid route: ${settings.name}');

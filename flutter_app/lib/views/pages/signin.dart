@@ -46,7 +46,8 @@ class _SigninPageState extends State<SigninPage> {
             Navigator.of(context, rootNavigator: true).pop();
             await Provider.of<UserProvider>(context, listen: false)
                 .saveUser(event.data, UserType.System);
-            Navigator.pushNamed(context, '/');
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/', (route) => false);
             break;
           case Status.ERROR:
             Navigator.of(context, rootNavigator: true).pop();

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter_app/models/models.dart';
 import 'package:flutter_app/networking/repository/repositories.dart';
@@ -70,6 +71,30 @@ class UserBloc {
     try {
       await _repository.forgotPassword(email);
       sink.add(Response.completed(null));
+      dispose();
+    } catch (e) {
+      sink.add(Response.error(e.toString()));
+      print(e);
+    }
+  }
+
+  uploadAvatar(File file) async {
+    sink.add(Response.loading('Uploading...'));
+    try {
+      await _repository.uploadAvatar(file);
+      sink.add(Response.completed(null));
+      dispose();
+    } catch (e) {
+      sink.add(Response.error(e.toString()));
+      print(e);
+    }
+  }
+
+  update(String name, String phone, String avatar) async {
+    sink.add(Response.loading('Updating...'));
+    try {
+      User user = await _repository.update(name, phone, avatar);
+      sink.add(Response.completed(user));
       dispose();
     } catch (e) {
       sink.add(Response.error(e.toString()));

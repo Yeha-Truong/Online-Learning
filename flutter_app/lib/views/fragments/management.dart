@@ -63,6 +63,15 @@ class _ManagementFragmentState extends State<ManagementFragment> {
                     trailing: Icon(Icons.keyboard_arrow_right),
                     onTap: () => {},
                   ),
+                if (_userProvider.type == UserType.System)
+                  ListTile(
+                    title: Text(
+                      'Change password',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                    onTap: () => Navigator.pushNamed(context, '/change'),
+                  ),
                 ListTile(
                   title: Text(
                     'Theme',

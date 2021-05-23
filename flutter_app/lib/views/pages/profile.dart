@@ -11,12 +11,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import '../utils/spacer.dart';
 
-class SigninPage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   @override
-  _SigninPageState createState() => _SigninPageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class _ProfilePageState extends State<ProfilePage> {
   bool _obscure = true;
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();

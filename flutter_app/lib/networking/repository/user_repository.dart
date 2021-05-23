@@ -37,4 +37,43 @@ class UserRepository {
     User user = User.fromJson(response['userInfo']);
     return user;
   }
+
+  Future<User> google(String email, String id) async {
+    var response = await _client.post(
+        '/user/login-google-mobile',
+        {
+          'user': {
+            'email': email,
+            'id': id,
+          }
+        },
+        authorization: false);
+    Authentication authentication = Authentication();
+    authentication.token = response['token'];
+    User user = User.fromJson(response['userInfo']);
+    return user;
+  }
+
+  Future<void> changePassword(
+      String id, String deprecated, String password) async {
+    await _client.post(
+        '/user/change-password',
+        {
+          'id': id,
+          'oldPass': deprecated,
+          'newPass': password,
+        },
+        authorization: true);
+    return;
+  }
+
+  Future<void> forgotPassword(String email) async {
+    await _client.post(
+        '/user/forget-pass/send-email',
+        {
+          'email': email,
+        },
+        authorization: false);
+    return;
+  }
 }

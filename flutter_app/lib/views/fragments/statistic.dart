@@ -124,7 +124,9 @@ class _StatisticFragmentState extends State<StatisticFragment> {
                     ),
                     VerticalSpacer(distance: 8.0),
                     Text(
-                      _userProvider.user.phone.toString(),
+                      _userProvider.user.phone != null
+                          ? _userProvider.user.phone.toString()
+                          : '',
                       style: Theme.of(context).textTheme.headline5,
                     ),
                     VerticalSpacer(distance: 16.0),

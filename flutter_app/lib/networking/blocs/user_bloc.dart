@@ -8,9 +8,9 @@ import '../response.dart';
 class UserBloc {
   late UserRepository _repository;
   late StreamController _controller;
-  StreamSink<Response<User>> get userSink =>
+  StreamSink<Response<User>> get sink =>
       _controller.sink as StreamSink<Response<User>>;
-  Stream<Response<User>> get userStream =>
+  Stream<Response<User>> get stream =>
       _controller.stream as Stream<Response<User>>;
   UserBloc() {
     _controller = StreamController<Response<User>>();
@@ -18,25 +18,61 @@ class UserBloc {
   }
 
   register(String email, String name, String phone, String password) async {
-    userSink.add(Response.loading('Sign up...'));
+    sink.add(Response.loading('Sign up...'));
     try {
       await _repository.register(email, name, phone, password);
-      userSink.add(Response.completed(null));
+      sink.add(Response.completed(null));
       dispose();
     } catch (e) {
-      userSink.add(Response.error(e.toString()));
+      sink.add(Response.error(e.toString()));
       print(e);
     }
   }
 
-  login(String email, String password) async {
-    userSink.add(Response.loading('Sign up...'));
+  signin(String email, String password) async {
+    sink.add(Response.loading('Sign in...'));
     try {
       User user = await _repository.signin(email, password);
-      userSink.add(Response.completed(user));
+      sink.add(Response.completed(user));
       dispose();
     } catch (e) {
-      userSink.add(Response.error(e.toString()));
+      sink.add(Response.error(e.toString()));
+      print(e);
+    }
+  }
+
+  google(String email, String id) async {
+    sink.add(Response.loading('Sign in...'));
+    try {
+      User user = await _repository.google(email, id);
+      sink.add(Response.completed(user));
+      dispose();
+    } catch (e) {
+      sink.add(Response.error(e.toString()));
+      print(e);
+    }
+  }
+
+  changePassword(String email, String old, String password) async {
+    sink.add(Response.loading('Changing password...'));
+    try {
+      await _repository.changePassword(email, old, password);
+      sink.add(Response.completed(null));
+      dispose();
+    } catch (e) {
+      sink.add(Response.error(e.toString()));
+      print(e);
+    }
+  }
+
+  forgotPassword(String email) async {
+    sink.add(Response.loading('Submitting request...'));
+    try {
+      await _repository.forgotPassword(email);
+      sink.add(Response.completed(null));
+      dispose();
+    } catch (e) {
+      sink.add(Response.error(e.toString()));
       print(e);
     }
   }

@@ -15,7 +15,7 @@ class WelcomePage extends StatelessWidget {
 
   void _trail(context) {
     Provider.of<UserProvider>(context, listen: false)
-        .saveUser(new User())
+        .saveUser(new User(), UserType.Guest)
         .then((value) => SchedulerBinding.instance!.addPostFrameCallback((_) {
               Navigator.pushNamed(context, '/');
             }));
@@ -49,7 +49,7 @@ class WelcomePage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
                     child: Text(
-                      'OnlineLearning',
+                      'OnLearn',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
@@ -80,7 +80,7 @@ class WelcomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: Text('Subscribe to OnlineLearning'),
+                        child: Text('Subscribe to OnLearn'),
                         onPressed: () => _subscribe(context),
                       ),
                     ),

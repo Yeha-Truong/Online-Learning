@@ -27,7 +27,7 @@ class _RatingBarState extends State<RatingBar> {
     if (index >= widget.rate) {
       icon = new Icon(
         Icons.star_border,
-        color: Theme.of(context).buttonColor,
+        color: widget.color ?? Theme.of(context).primaryColor,
         size: widget.size,
       );
     } else if (index > widget.rate - 1 && index < widget.rate) {

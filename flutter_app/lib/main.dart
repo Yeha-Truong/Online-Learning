@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/provider/theme.dart';
 import 'package:flutter_app/provider/user_provider.dart';
-import 'package:flutter_app/views/pages/google_signin.dart';
+import 'package:flutter_app/views/pages/forgot_password.dart';
 import 'package:flutter_app/views/pages/review.dart';
 import 'package:flutter_app/views/pages/course.dart';
 import 'package:flutter_app/views/pages/centre.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           themeMode: theme.themeMode,
           theme: OLTheme.lightTheme,
           darkTheme: OLTheme.darkTheme,
-          initialRoute: '/google',
+          initialRoute: '/welcome',
           routes: {
             '/': (context) => CentrePage(),
             '/welcome': (context) => WelcomePage(),
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
             '/support': (context) => SupportPage(),
             '/course': (context) => CoursePage(),
             '/review': (context) => ReviewPage(),
-            '/google': (context) => GoogleSigninPage(),
+            '/forgot': (context) => ForgotPasswordPage(),
           },
         );
       },

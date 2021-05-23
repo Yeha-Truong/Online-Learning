@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'views/pages/welcome.dart';
-import 'views/pages/signin.dart';
-import 'views/pages/support.dart';
-import 'views/pages/home.dart';
+import 'package:flutter_app/provider/theme.dart';
+import 'package:flutter_app/provider/user_provider.dart';
+import 'package:flutter_app/views/pages/forgot_password.dart';
+import 'package:flutter_app/views/pages/review.dart';
+import 'package:flutter_app/views/pages/course.dart';
+import 'package:flutter_app/views/pages/centre.dart';
+import 'package:flutter_app/views/pages/signin.dart';
+import 'package:flutter_app/views/pages/signup.dart';
+import 'package:flutter_app/views/pages/support.dart';
+import 'package:flutter_app/views/pages/welcome.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,30 +19,36 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Online Learning',
-      theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
-
-        appBarTheme: AppBarTheme(
-          brightness: Brightness.dark,
-          color: Colors.black12,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+          lazy: true,
+        ),
+      ],
+      builder: (context, _) {
+        final theme = Provider.of<ThemeProvider>(context);
 
-        // Define the default font family.
-
-        // Define the default TextTheme. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
-        textTheme: TextTheme(),
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => WelcomePage(),
-        '/signin': (context) => SigninPage(),
-        '/support': (context) => SupportPage(),
-        '/home': (context) => HomePage(),
+        return MaterialApp(
+          title: 'Online Learning',
+          themeMode: theme.themeMode,
+          theme: OLTheme.lightTheme,
+          darkTheme: OLTheme.darkTheme,
+          initialRoute: '/welcome',
+          routes: {
+            '/': (context) => CentrePage(),
+            '/welcome': (context) => WelcomePage(),
+            '/signin': (context) => SigninPage(),
+            '/signup': (context) => SignupPage(),
+            '/support': (context) => SupportPage(),
+            '/course': (context) => CoursePage(),
+            '/review': (context) => ReviewPage(),
+            '/forgot': (context) => ForgotPasswordPage(),
+          },
+        );
       },
     );
   }

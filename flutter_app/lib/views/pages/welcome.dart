@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter_app/models/models.dart';
+import 'package:flutter_app/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class WelcomePage extends StatelessWidget {
   void _signin(context) {
     Navigator.pushNamed(context, '/signin');
   }
 
-  void _subscribe() {}
-  void _trail() {}
+  void _subscribe(context) {
+    Navigator.pushNamed(context, '/signup');
+  }
+
+  void _trail(context) {
+    Provider.of<UserProvider>(context, listen: false)
+        .saveUser(new User(), UserType.Guest)
+        .then((value) => SchedulerBinding.instance!.addPostFrameCallback((_) {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/', (route) => false);
+            }));
+  }
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserProvider>(context, listen: false).loadUser().then((value) {
+      if (value)
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    });
     return Scaffold(
       body: Center(
         child: Container(
@@ -33,7 +51,7 @@ class WelcomePage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 10.0),
                     child: Text(
-                      'PLURALSIGHT',
+                      'OnLearn',
                       style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
@@ -64,15 +82,15 @@ class WelcomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: Text('Subscribe to Pluralsight'),
-                        onPressed: _subscribe,
+                        child: Text('Subscribe to OnLearn'),
+                        onPressed: () => _subscribe(context),
                       ),
                     ),
                     FractionallySizedBox(
                       widthFactor: 0.9,
                       child: OutlinedButton(
                         child: Text('Explore without a subsciption'),
-                        onPressed: _trail,
+                        onPressed: () => _trail(context),
                       ),
                     ),
                   ],

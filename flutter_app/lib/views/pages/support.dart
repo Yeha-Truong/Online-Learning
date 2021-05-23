@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 
 class SupportPage extends StatelessWidget {
-  void _signin(context) {
-    Navigator.pop(context);
-  }
-
-  void _forgot() {}
-  void _subscribe() {}
-  void _restore() {}
-  void _contact() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +16,17 @@ class SupportPage extends StatelessWidget {
                     Icons.keyboard_arrow_left,
                     size: 32.0,
                   ),
-                  Text('Sign in'),
+                  Text('Cancel'),
                 ],
               ),
-              onTap: () => _signin(context),
+              onTap: () => Navigator.pop(context),
             ),
           ),
         ),
         leadingWidth: 400.0,
         automaticallyImplyLeading: false,
+        title: Text('Support'),
+        centerTitle: true,
       ),
       body: Center(
         child: Container(
@@ -44,22 +37,12 @@ class SupportPage extends StatelessWidget {
                 ListTile(
                   title: Text('Forgot your password'),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: _forgot,
+                  onTap: () => Navigator.pushNamed(context, '/forgot'),
                 ),
                 ListTile(
-                  title: Text('Subscribe to Pluralsight'),
+                  title: Text('Subscribe to OnLearn'),
                   trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: _subscribe,
-                ),
-                ListTile(
-                  title: Text('Restore subscription with iTunes'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: _restore,
-                ),
-                ListTile(
-                  title: Text('Contact Pluralsight support'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                  onTap: _contact,
+                  onTap: () => Navigator.pushNamed(context, '/signup'),
                 ),
               ],
             ).toList(),

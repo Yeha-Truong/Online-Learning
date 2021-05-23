@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
+//ignore: must_be_immutable
 class RatingBar extends StatefulWidget {
   final int stars;
   double rate;
   final bool reactable;
-  final Color color;
+  final Color? color;
   final double size;
 
   RatingBar(
-      {Key key,
+      {Key? key,
       this.stars = 5,
       this.rate = 0.0,
       this.reactable = true,
@@ -26,7 +27,7 @@ class _RatingBarState extends State<RatingBar> {
     if (index >= widget.rate) {
       icon = new Icon(
         Icons.star_border,
-        color: Theme.of(context).buttonColor,
+        color: widget.color ?? Theme.of(context).primaryColor,
         size: widget.size,
       );
     } else if (index > widget.rate - 1 && index < widget.rate) {

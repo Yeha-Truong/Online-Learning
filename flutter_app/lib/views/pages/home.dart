@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/views/fragments/download_fragment.dart';
-import 'package:flutter_app/views/fragments/home_fragment.dart';
-import 'package:flutter_app/views/fragments/search_fragment.dart';
+import 'package:flutter_app/views/fragments/courses.dart';
+import 'package:flutter_app/views/fragments/home.dart';
+import 'package:flutter_app/views/fragments/management.dart';
+import 'package:flutter_app/views/fragments/statistic.dart';
+import 'package:flutter_app/views/fragments/theme.dart';
+import 'package:flutter_app/views/pages/change_password.dart';
+import 'package:flutter_app/views/pages/profile.dart';
+
+class Routes {
+  static const String root = '/';
+  static const String courses = '/courses';
+  static const String management = '/management';
+  static const String theme = '/theme';
+  static const String statistic = '/statistic';
+  static const String change = '/change';
+  static const String profile = '/profile';
+}
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,43 +23,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _index = 0;
-  static List<Widget> _fragments = <Widget>[
-    HomeFragment(),
-    DownloadFragment(),
-    Container(),
-    SearchFragment(),
-  ];
-
+  final _key = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _fragments.elementAt(_index),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.arrow_circle_down_outlined),
-            label: 'Download',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.subscriptions_outlined),
-            label: 'Browse',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-        ],
-        currentIndex: _index,
-        selectedItemColor: Colors.cyanAccent[400],
-        onTap: (index) => {
-          setState(() {
-            _index = index;
-          })
+    return WillPopScope(
+      onWillPop: () async => !await _key.currentState!.maybePop(),
+      child: Navigator(
+        key: _key,
+        initialRoute: Routes.root,
+        onGenerateRoute: (settings) {
+          WidgetBuilder builder;
+          switch (settings.name) {
+            case Routes.root:
+              builder = (_) => HomeFragment();
+              break;
+            case Routes.courses:
+              builder = (_) => CourseListFragment();
+              break;
+            case Routes.management:
+              builder = (_) => ManagementFragment();
+              break;
+            case Routes.statistic:
+              builder = (_) => StatisticFragment();
+              break;
+            case Routes.theme:
+              builder = (_) => ThemeFragment();
+              break;
+            case Routes.change:
+              builder = (_) => ChangePasswordPage();
+              break;
+            case Routes.profile:
+              builder = (_) => ProfilePage();
+              break;
+            default:
+              throw Exception('Invalid route: ${settings.name}');
+          }
+          return MaterialPageRoute(builder: builder, settings: settings);
         },
       ),
     );
